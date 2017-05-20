@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.equinoxosgi.toast.IAirbagListener;
+import org.equinoxosgi.toast.dev.airbag.IAirbagListener;
 
 public class Airbag {
 	private List listeners;
