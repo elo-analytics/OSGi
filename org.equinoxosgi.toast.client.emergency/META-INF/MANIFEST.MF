@@ -7,3 +7,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.equinoxosgi.toast.dev.airbag,
  org.equinoxosgi.toast.dev.gps,
  org.osgi.framework;version="1.8.0"
+Bundle-Activator: org.equinoxosgi.toast.client.emergency.Activator
