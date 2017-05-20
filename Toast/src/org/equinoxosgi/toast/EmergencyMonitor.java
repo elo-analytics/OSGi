@@ -1,5 +1,7 @@
 package org.equinoxosgi.toast;
 
+import org.equinoxosgi.toast.dev.gps.Gps;
+
 public class EmergencyMonitor implements IAirbagListener {
 	private Airbag airbag;
 	private Gps gps;

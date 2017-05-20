@@ -1,5 +1,7 @@
 package org.equinoxosgi.toast;
 
+import org.equinoxosgi.toast.dev.gps.Gps;
+
 public class Main {
 	public static void main (String[] args) {
 		System.out.println("Launching");
