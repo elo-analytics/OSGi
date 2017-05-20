@@ -1,9 +1,11 @@
-package org.equinoxosgi.toast;
+package org.equinoxosgi.toast.dev.airbag;
 
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.equinoxosgi.toast.IAirbagListener;
 
 public class Airbag {
 	private List listeners;
