@@ -1,5 +1,6 @@
 package org.equinoxosgi.toast;
 
+import org.equinoxosgi.toast.client.emergency.EmergencyMonitor;
 import org.equinoxosgi.toast.dev.airbag.Airbag;
 import org.equinoxosgi.toast.dev.gps.Gps;
 
