@@ -7,11 +7,13 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 public class Activator implements BundleActivator {
+	private FakeAirbag airbag;
 	private ServiceRegistration registration;
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		FakeAirbag airbag = new FakeAirbag();
+		airbag = new FakeAirbag();
+		airbag.startup();
 		registration = context.registerService(
 				IAirbag.class.getName(), airbag, null);
 	}

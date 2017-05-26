@@ -37,8 +37,18 @@ public class FakeAirbag implements IAirbag {
 		listeners.remove(listener);
 	}
 	
-	/*Makes FakeAirbag deploy and notify its listeners every five seconds*/
 	public synchronized void shutdown() {
+		isRunning = false;
+		job.cancel();
+		try {
+			job.join();
+		} catch (InterruptedException e) {
+			//shutting down, safe to ignore
+		}
+	}
+	
+	/*Makes FakeAirbag deploy and notify its listeners every five seconds*/
+	public synchronized void startup() {
 		isRunning = true;
 		job = new Job("FakeAirbag") {
 			protected IStatus run(IProgressMonitor monitor){
