@@ -2,11 +2,11 @@ package org.equinoxosgi.toast.client.emergency;
 
 import org.equinoxosgi.toast.dev.airbag.Airbag;
 import org.equinoxosgi.toast.dev.airbag.IAirbagListener;
-import org.equinoxosgi.toast.dev.gps.Gps;
+import org.equinoxosgi.toast.dev.gps.IGps;
 
 public class EmergencyMonitor implements IAirbagListener {
 	private Airbag airbag;
-	private Gps gps;
+	private IGps gps;
 	
 	/*business logic - satisfaz a interface do listener e implementa o comportamento
 	 * real de emergencia. Todos os outros metodos sao desenhados para dar suporte
@@ -29,7 +29,7 @@ public class EmergencyMonitor implements IAirbagListener {
 		airbag = value;
 	}
 	
-	public void setGps (Gps value){
+	public void setGps (IGps value){
 		gps = value;
 	}
 	
