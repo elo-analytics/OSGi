@@ -1,4 +1,4 @@
-package org.equinoxosgi.toast.client.emergency;
+package org.equinoxosgi.toast.internal.client.emergency;
 
 import org.equinoxosgi.toast.dev.airbag.IAirbag;
 import org.equinoxosgi.toast.dev.airbag.IAirbagListener;
