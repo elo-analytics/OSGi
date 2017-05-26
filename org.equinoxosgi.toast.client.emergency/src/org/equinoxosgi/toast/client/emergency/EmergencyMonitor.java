@@ -1,11 +1,11 @@
 package org.equinoxosgi.toast.client.emergency;
 
-import org.equinoxosgi.toast.dev.airbag.Airbag;
+import org.equinoxosgi.toast.dev.airbag.IAirbag;
 import org.equinoxosgi.toast.dev.airbag.IAirbagListener;
 import org.equinoxosgi.toast.dev.gps.IGps;
 
 public class EmergencyMonitor implements IAirbagListener {
-	private Airbag airbag;
+	private IAirbag airbag;
 	private IGps gps;
 	
 	/*business logic - satisfaz a interface do listener e implementa o comportamento
@@ -25,7 +25,7 @@ public class EmergencyMonitor implements IAirbagListener {
 	 * e' tambem uma boa pratica criar metodos de startup e shutdown simetricos
 	 * i.e., qualquer comportamento feito por um deve ser desfeito pelo outro
 	 * na ordem reversa*/
-	public void setAirbag (Airbag value){
+	public void setAirbag (IAirbag value){
 		airbag = value;
 	}
 	
