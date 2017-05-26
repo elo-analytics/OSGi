@@ -1,4 +1,6 @@
-package org.equinoxosgi.toast.dev.gps;
+package org.equinoxosgi.toast.internal.dev.gps.fake;
+
+import org.equinoxosgi.toast.dev.gps.IGps;
 
 public class FakeGps implements IGps {
 	@Override

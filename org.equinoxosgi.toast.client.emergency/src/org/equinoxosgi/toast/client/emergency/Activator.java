@@ -1,8 +1,8 @@
 package org.equinoxosgi.toast.client.emergency;
 
 import org.equinoxosgi.toast.dev.airbag.Airbag;
-import org.equinoxosgi.toast.dev.gps.FakeGps;
 import org.equinoxosgi.toast.dev.gps.IGps;
+import org.equinoxosgi.toast.internal.dev.gps.fake.FakeGps;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
