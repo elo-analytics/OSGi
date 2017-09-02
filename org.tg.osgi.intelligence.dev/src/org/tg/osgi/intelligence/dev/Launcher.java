@@ -10,9 +10,13 @@ import java.util.ServiceLoader;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
+import org.tg.osgi.intelligence.obr.RepositoryAdm;
+import org.apache.felix.bundlerepository.*;
+
 
 public class Launcher {
 	
@@ -20,8 +24,8 @@ public class Launcher {
 	public static final String USERDIR = PLUGINDIR + "/user";
 	private static String[] jars = null;
 	private static String[] libs = null;
-	
-
+	private Framework framework;
+	private RepositoryAdm repoAdmin = null;
 	private BundleContext context;
 
 	Launcher() {
@@ -40,6 +44,9 @@ public class Launcher {
 		config.put("felix.fileinstall.dir", "./dropins");
 		config.put("felix.fileinstall.noInitialDelay", "true");
 		config.put("felix.fileinstall.start.level", "4");
+		
+		//Criar o RepositoryAdm sem problemas
+		config.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, "org.apache.felix.bundlerepository; version=2.0.10");
 
 		Framework framework = frameworkFactory.newFramework(config);
 
@@ -54,17 +61,20 @@ public class Launcher {
 		context = framework.getBundleContext();
 		
 		// framework bundles
-		//start("org.eclipse.osgi.services_3.5.100.v20160504-1419.jar");
-		//start("org.eclipse.osgi.util_3.3.100.v20150423-1351.jar");
+		start("org.eclipse.osgi.services_3.5.100.v20160504-1419.jar");
+		start("org.eclipse.osgi.util_3.3.100.v20150423-1351.jar");
 		start("org.eclipse.equinox.common_3.8.0.v20160509-1230.jar");
-		//start("org.eclipse.equinox.registry_3.6.100.v20160223-2218.jar");
-		//start("org.eclipse.equinox.preferences_3.6.1.v20160815-1406.jar");
-		//start("org.eclipse.equinox.app_1.3.400.v20150715-1528.jar");
+		start("org.eclipse.equinox.registry_3.6.100.v20160223-2218.jar");
+		start("org.eclipse.equinox.preferences_3.6.1.v20160815-1406.jar");
+		start("org.eclipse.equinox.app_1.3.400.v20150715-1528.jar");
 		start("org.eclipse.core.jobs_3.8.0.v20160509-0411.jar");
-		//start("org.eclipse.core.contenttype_3.5.100.v20160418-1621.jar");
-		//start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");
-		//start("org.eclipse.equinox.security_1.2.200.v20150715-1528.jar");
-		//start("org.eclipse.equinox.event_1.3.200.v20160324-1850.jar");*/
+		start("org.eclipse.equinox.util_1.0.500.v20130404-1337.jar");
+		start("org.eclipse.equinox.ds_1.4.400.v20160226-2036.jar");
+		start("org.eclipse.core.contenttype_3.5.100.v20160418-1621.jar");
+		start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");
+		start("org.eclipse.equinox.security_1.2.200.v20150715-1528.jar");
+		start("org.eclipse.equinox.event_1.3.200.v20160324-1850.jar");
+		start("org.apache.felix.bundlerepository-2.0.10.jar");			//Adiciona o OBR
 		//start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");
 		
 		// default shell
@@ -72,6 +82,13 @@ public class Launcher {
 		start("org.apache.felix.gogo.command_0.10.0.v201209301215.jar");
 		start("org.apache.felix.gogo.shell_0.10.0.v201212101605.jar");
 		start("org.eclipse.equinox.console_1.1.200.v20150929-1405.jar");
+		
+		
+		//Repository 
+		repoAdmin = new RepositoryAdm(context);
+		repoAdmin.addRepository("http://felix.apache.org/obr/releases.xml");
+		repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
+		repoAdmin.listRepositories();
 
 		System.out.println("Fim do construtor!");
 	}
@@ -180,6 +197,14 @@ public class Launcher {
 		try {
 			newBundle.uninstall();
 			System.out.println("Bundle " + name + " uninstalled!");
+		} catch (BundleException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void shutdown() throws BundleException {
+		try {
+			framework.stop();
 		} catch (BundleException e) {
 			e.printStackTrace();
 		}

@@ -25,4 +25,11 @@
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>plugins</name>
+			<type>2</type>
+			<location>C:/Users/jpaul/Downloads/Programs/Eclipse/Equinox/plugins</location>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="org.equinoxosgi.toastDS.dev.gps">
+   <implementation class="org.equinoxosgi.toastDS.internal.dev.gps.fake.FakeGps"/>
+   <service>
+      <provide interface="org.equinoxosgi.toastDS.dev.gps.IGps"/>
+   </service>
+</scr:component>
