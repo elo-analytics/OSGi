@@ -6,6 +6,7 @@ import java.net.URL;
 
 import org.apache.felix.bundlerepository.Repository;
 import org.apache.felix.bundlerepository.RepositoryAdmin;
+import org.apache.felix.bundlerepository.Resource;
 import org.apache.felix.bundlerepository.impl.RepositoryAdminImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -105,5 +106,28 @@ public class RepositoryAdm {
 		}
 		System.out.println("ERROR: Couldn't remove repository");
 		return false;
+	}
+	
+	public Resource[] getListResources(String filterExpr) {
+		Resource[] resources = null;
+		
+		try {
+			resources = repoAdmin.discoverResources(filterExpr);
+		} catch (InvalidSyntaxException e) {
+			System.out.println("ERROR: Cannot list resources.");
+			//e.printStackTrace();
+			return null;
+		}
+		
+		return resources;
+	}
+	
+	public void printListResources(String filterExpr) {
+		Resource[] resources = getListResources(filterExpr);
+		
+		System.out.println("Bundles found:");
+		for (Resource res : resources) {
+			System.out.println(res.toString());
+		}
 	}
 }

@@ -88,9 +88,13 @@ public class Launcher {
 		repoAdmin = new RepositoryAdm(context);
 		repoAdmin.addRepository("http://felix.apache.org/obr/releases.xml");
 		repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
-		repoAdmin.listRepositories();
+		
 
 		System.out.println("Fim do construtor!");
+	}
+	
+	RepositoryAdm getRepoAdm(){
+		return this.repoAdmin;
 	}
 
 	private String[] getJARs() {		//Considero que ja' possuo todos os pacotes que necessito prontos para instalacao

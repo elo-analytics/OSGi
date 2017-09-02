@@ -35,6 +35,10 @@ public class Main {
 		launcher.stop("org.equinoxosgi.toastDS.dev.airbag_1.0.0.201706090824.jar");
 		launcher.stop("org.equinoxosgi.toastDS.client.emergency_1.0.0.201706090824.jar");
 		*/
+		
+		launcher.getRepoAdm().listRepositories();
+		launcher.getRepoAdm().printListResources(null);
+		
 		System.out.println("End of execution!");
 
 	}
