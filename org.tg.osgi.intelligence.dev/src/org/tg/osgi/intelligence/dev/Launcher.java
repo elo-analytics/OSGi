@@ -84,10 +84,11 @@ public class Launcher {
 		start("org.eclipse.equinox.console_1.1.200.v20150929-1405.jar");
 		
 		
+		
 		//Repository 
 		repoAdmin = new RepositoryAdm(context);
 		repoAdmin.addRepository("http://felix.apache.org/obr/releases.xml");
-		repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
+		//repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
 		
 
 		System.out.println("Fim do construtor!");
@@ -121,7 +122,8 @@ public class Launcher {
 			}
 		}
 		if (found == null) {
-			throw new RuntimeException(String.format("JAR for %s not found", name));
+			System.out.println("JAR for " + name + " not found in local repository");
+			//throw new RuntimeException(String.format("JAR for %s not found in local repository", name));
 		}
 		return found;
 	}
@@ -131,7 +133,7 @@ public class Launcher {
 	}
 
 	protected Bundle install(String name) {
-		Bundle newBundle = context.getBundle(pathToFile(name));
+		Bundle newBundle = context.getBundle(pathToFile(name));		//atualmente nao estou pesquisando o bundle
 		//String jarPath = search4Bundle(name); 
 		if ((newBundle != null) && 
 				((newBundle.getState() & 0x00000026) != 0x0)) {				//Verifica se esta ativo ou installed ou resolved

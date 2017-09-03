@@ -6,12 +6,15 @@ import java.net.URL;
 
 import org.apache.felix.bundlerepository.Repository;
 import org.apache.felix.bundlerepository.RepositoryAdmin;
+import org.apache.felix.bundlerepository.Resolver;
 import org.apache.felix.bundlerepository.Resource;
+import org.apache.felix.bundlerepository.Reason;
 import org.apache.felix.bundlerepository.impl.RepositoryAdminImpl;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.Version;
 
 public class RepositoryAdm {
 	
@@ -119,15 +122,94 @@ public class RepositoryAdm {
 			return null;
 		}
 		
-		return resources;
+		return (resources.length == 0) ? null : resources;
 	}
 	
 	public void printListResources(String filterExpr) {
 		Resource[] resources = getListResources(filterExpr);
 		
+		if (resources == null) {
+			System.out.println("Couldn't find any bundles matching: " + filterExpr);
+			return;
+		}
+		
 		System.out.println("Bundles found:");
 		for (Resource res : resources) {
-			System.out.println(res.toString());
+			System.out.println(res.getPresentationName() + " " + res.getVersion());
 		}
 	}
+	
+	public Reason[] deploy(Resource resource, int opt) {
+		Resolver resolver = this.repoAdmin.resolver();
+		
+		resolver.add(resource);
+		int resolveAttempt = 5; 
+        while (resolveAttempt-- > 0) 
+        {
+        	try { 
+        		if (resolver.resolve(opt)) 
+        		{ 
+        			resolver.deploy(opt);
+        			System.out.println("Bundle " + resource.getSymbolicName() + "-"
+        					+ resource.getVersion() + ".jar"
+        					+ " downloaded from remote repository and sucessfully started!");
+        			return null;
+        		} else { 
+        			Reason[] reqs = resolver.getUnsatisfiedRequirements(); 
+        			return reqs;	//Resolve sem sucesso, mas completo.
+        		} 
+        	} catch (IllegalStateException e) { 
+        		// If resolve unsuccessful, try again 
+        		if (resolveAttempt == 0) 
+        			e.printStackTrace(); 
+        	}
+        }
+        return null;
+	}
+	
+	
+	/*
+	 * Method that gets the list of requirements and tries do get them from the repository
+	 * @param filterExpr 
+	 * @param opt
+	 * */
+	public void deployResource(String filterExpr, int opt) {
+		Resource[] resource = null;
+		Reason[] reasons = null;
+		
+		resource = getListResources(filterExpr);
+		
+		if (resource == null) {
+			System.out.println("ERROR: Couldn't find bundle that matches " +
+						         				filterExpr + " in any known repository!");
+			return;
+		}
+		reasons = deploy(selectNewestVersion(resource), opt);		// pega o primeiro da lista
+		if (reasons == null) return;	//deploy successfull
+		
+		//trying to deploy dependencies recursively... Check if needed!
+		for (int i = 0; i < reasons.length; i++) { 		
+            System.out.println("Trying to resolve bundle: " + reasons[i]); 
+            deployResource(reasons[i].getRequirement().getFilter(), opt);
+        }
+	}
+	
+	private Resource selectNewestVersion(Resource[] resources) {
+        int index = -1;
+        Version version = null;
+        for (int i = 0; (resources != null) && (i < resources.length); i++) {
+            if (i == 0) {
+                index = 0;
+                version = resources[i].getVersion();
+            } else {
+                Version ver = resources[i].getVersion();
+                if (ver.compareTo(version) > 0) {
+                    index = i;
+                    version = ver;
+                }
+            }
+        }
+
+        return (index < 0) ? null : resources[index];
+    }
 }

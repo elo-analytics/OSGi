@@ -37,8 +37,10 @@ public class Main {
 		*/
 		
 		launcher.getRepoAdm().listRepositories();
+		System.out.println("---------------------------");
 		launcher.getRepoAdm().printListResources(null);
-		
+		System.out.println("---------------------------");
+		launcher.getRepoAdm().deployResource("(symbolicname=org.apache.felix.webconsole)", 0);
 		System.out.println("End of execution!");
 
 	}
