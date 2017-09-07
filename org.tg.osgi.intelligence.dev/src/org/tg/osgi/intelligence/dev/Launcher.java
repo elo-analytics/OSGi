@@ -24,7 +24,7 @@ public class Launcher {
 	public static final String USERDIR = PLUGINDIR + "/user";
 	private static String[] jars = null;
 	private static String[] libs = null;
-	private Framework framework;
+	private Framework framework = null;
 	private RepositoryAdm repoAdmin = null;
 	private BundleContext context;
 
@@ -48,7 +48,7 @@ public class Launcher {
 		//Criar o RepositoryAdm sem problemas
 		config.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, "org.apache.felix.bundlerepository; version=2.0.10");
 
-		Framework framework = frameworkFactory.newFramework(config);
+		framework = frameworkFactory.newFramework(config);
 
 		try {
 			framework.start();
@@ -56,32 +56,32 @@ public class Launcher {
 			e.printStackTrace();
 		}
 		
-		System.out.println("OSGi iniciado!");
+		System.out.println("OSGi Framework successfully started!");
 
 		context = framework.getBundleContext();
 		
 		// framework bundles
-		start("org.eclipse.osgi.services"); //_3.5.100.v20160504-1419.jar");
-		start("org.eclipse.osgi.util");	//_3.3.100.v20150423-1351.jar");
-		start("org.eclipse.equinox.common");	//_3.8.0.v20160509-1230.jar");
-		start("org.eclipse.equinox.registry");	//_3.6.100.v20160223-2218.jar");
-		start("org.eclipse.equinox.preferences");	//_3.6.1.v20160815-1406.jar");
-		start("org.eclipse.equinox.app");	//_1.3.400.v20150715-1528.jar");
-		start("org.eclipse.core.jobs");	//_3.8.0.v20160509-0411.jar");
-		start("org.eclipse.equinox.util");	//_1.0.500.v20130404-1337.jar");
-		start("org.eclipse.equinox.ds");	//_1.4.400.v20160226-2036.jar");
-		start("org.eclipse.core.contenttype");	//_3.5.100.v20160418-1621.jar");
-		start("org.eclipse.core.runtime");	//_3.12.0.v20160606-1342.jar");
-		start("org.eclipse.equinox.security");	//_1.2.200.v20150715-1528.jar");
-		start("org.eclipse.equinox.event");	//_1.3.200.v20160324-1850.jar");
-		start("org.apache.felix.bundlerepository");	//-2.0.10.jar");			//Adiciona o OBR
+		start("org.eclipse.osgi.services");
+		start("org.eclipse.osgi.util");
+		start("org.eclipse.equinox.common");
+		start("org.eclipse.equinox.registry");
+		start("org.eclipse.equinox.preferences");
+		start("org.eclipse.equinox.app");
+		start("org.eclipse.core.jobs");
+		start("org.eclipse.equinox.util");
+		start("org.eclipse.equinox.ds");
+		start("org.eclipse.core.contenttype");
+		start("org.eclipse.core.runtime");
+		start("org.eclipse.equinox.security");
+		start("org.eclipse.equinox.event");
+		start("org.apache.felix.bundlerepository");		//Adiciona o OBR
 		//start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");
 		
 		// default shell
-		start("org.apache.felix.gogo.runtime");	//_0.10.0.v201209301036.jar");
-		start("org.apache.felix.gogo.command");	//_0.10.0.v201209301215.jar");
-		start("org.apache.felix.gogo.shell");	//_0.10.0.v201212101605.jar");
-		start("org.eclipse.equinox.console");	//_1.1.200.v20150929-1405.jar");
+		start("org.apache.felix.gogo.runtime");
+		start("org.apache.felix.gogo.command");
+		start("org.apache.felix.gogo.shell");
+		start("org.eclipse.equinox.console");
 		
 		
 		
@@ -91,7 +91,7 @@ public class Launcher {
 		//repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
 		
 
-		System.out.println("Fim do construtor!");
+		//System.out.println("Fim do construtor!");
 	}
 	
 	RepositoryAdm getRepoAdm(){
@@ -180,7 +180,7 @@ public class Launcher {
 				System.out.println("ERROR: Couldn't install bundle " + name);
 				return null;
 			}
-			System.out.println("Bundle " + name +" installed!");
+			System.out.println("Bundle " + name +" installed successfully!");
 			return newBundle;
 		}
 		else {	//Bundle not found locally
@@ -197,7 +197,7 @@ public class Launcher {
 			else {								//bundle instalado, mas nao ativo
 				try {
 					newBundle.start();
-					System.out.println("Bundle " + newBundle.getSymbolicName() + " started!");
+					System.out.println("Bundle " + newBundle.getSymbolicName() + " started successfully!");
 					return true;
 				} catch (BundleException e) {
 					//pegar dependencias caso nao consiga
@@ -210,7 +210,6 @@ public class Launcher {
 	
 	protected Bundle start(String name) {
 		Bundle newBundle = getBundleBySymbolicName(name);
-		
 		
 		if (newBundle != null) {	//Bundle no framework
 			if (startBundle(newBundle)){
@@ -270,6 +269,7 @@ public class Launcher {
 	protected void shutdown() throws BundleException {
 		try {
 			framework.stop();
+			System.out.println("OSGi Framework successfully stopped!");
 		} catch (BundleException e) {
 			e.printStackTrace();
 		}
