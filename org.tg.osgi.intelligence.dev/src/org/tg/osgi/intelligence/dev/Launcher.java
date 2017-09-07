@@ -110,7 +110,7 @@ public class Launcher {
 		return jars;
 	}
 	
-	protected String search4Bundle(String name) {
+	protected String search4BundleLocally(String name) {
 		String found = null;
 		if (name.endsWith(".jar")) {		//Veio o nome completo do bundle, so' falta formatar
 			return String.format("file:" + PLUGINDIR + "/%s", name);
@@ -123,41 +123,16 @@ public class Launcher {
 		}
 		if (found == null) {
 			System.out.println("JAR for " + name + " not found in local repository");
-			//throw new RuntimeException(String.format("JAR for %s not found in local repository", name));
 		}
 		return found;
 	}
 	
-	protected Bundle installLocalBundle(String name) {
-		Bundle newBundle = context.getBundle(name);		//pathToFile(name));		//atualmente nao estou pesquisando o bundle
-		if ((newBundle != null) && 
-				((newBundle.getState() & (Bundle.ACTIVE | Bundle.INSTALLED | Bundle.RESOLVED)) != 0x0)) {				//Verifica se esta ativo ou installed ou resolved
-			System.out.println("Bundle " + name +" already installed!");
-			return newBundle;
+	protected Bundle getBundleBySymbolicName(String name) {
+		for (Bundle bundle : context.getBundles()) {
+			if (bundle.getSymbolicName().equals(name)) {
+				return bundle;
+			}
 		}
-		try {
-			newBundle = context.installBundle(name);
-			//System.out.println("Bundle " + name +" installed!");
-			return newBundle;
-		} catch (BundleException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	protected Bundle install(String name) {
-		Bundle newBundle = null;
-		String jarPath = search4Bundle(name);
-		
-		if (jarPath != null) {
-			newBundle = installLocalBundle(jarPath);
-			System.out.println("Bundle " + name +" installed!");
-			return newBundle;
-		}
-		else {	//Bundle not found locally
-			//repoAdmin
-		}
-		
 		return null;
 	}
 	
@@ -170,33 +145,97 @@ public class Launcher {
 		return false;
 	}
 	
-	protected Bundle start(String name) {
-		String jarPath = search4Bundle(name);
-		Bundle newBundle = context.getBundle(jarPath);		//pathToFile(name));		//a funcao pathtofile esta quebrada
-																	//vai vir agora so o symbolic name
-		if(checkBundleActive(newBundle))
+	protected Boolean checkBundleInstalled(Bundle bundle) {
+		if ((bundle != null) && 
+				((bundle.getState() & (Bundle.ACTIVE | Bundle.INSTALLED | Bundle.RESOLVED)) != 0x0)) {				//Verifica se esta ativo ou installed ou resolved
+			System.out.println("Bundle " + bundle.getSymbolicName() +" already installed!");
+			return true;
+		}
+		return false;
+	}
+	
+	protected Bundle installLocalBundle(String name) {
+		Bundle newBundle = context.getBundle(name);
+		
+		if (checkBundleInstalled(newBundle)) {				//Verifica se esta ativo ou installed ou resolved
 			return newBundle;
+		}
+		
+		try {
+			newBundle = context.installBundle(name);
+			return newBundle;
+		} catch (BundleException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-		newBundle = installLocalBundle(jarPath);
-		if (newBundle != null) {
+	protected Bundle install(String name, Boolean shouldStart) {
+		Bundle newBundle = null;
+		String jarPath = search4BundleLocally(name);
+		
+		if (jarPath != null) {
+			newBundle = installLocalBundle(jarPath);
+			if (newBundle == null) {
+				System.out.println("ERROR: Couldn't install bundle " + name);
+				return null;
+			}
 			System.out.println("Bundle " + name +" installed!");
-			try {
-				newBundle.start();
-			} catch (BundleException e) {
-				e.printStackTrace();
+			return newBundle;
+		}
+		else {	//Bundle not found locally
+			//repoAdmin
+		}
+		
+		return null;
+	}
+	
+	protected Boolean startBundle(Bundle newBundle) {
+		if (newBundle != null) {				//Bundle no framework
+			if (checkBundleActive(newBundle))	//Bundle ja esta ativo
+				return true;
+			else {								//bundle instalado, mas nao ativo
+				try {
+					newBundle.start();
+					System.out.println("Bundle " + newBundle.getSymbolicName() + " started!");
+					return true;
+				} catch (BundleException e) {
+					//pegar dependencias caso nao consiga
+					e.printStackTrace();
+				}
 			}
 		}
-		System.out.println("Bundle " + name + " started!");
-		return newBundle;
+		return false;
+	}
+	
+	protected Bundle start(String name) {
+		Bundle newBundle = getBundleBySymbolicName(name);
+		
+		
+		if (newBundle != null) {	//Bundle no framework
+			if (startBundle(newBundle)){
+				return newBundle;
+			}
+			System.out.println("ERROR: Couldn't start bundle " + name);
+			return null;
+		}
+		
+		//Bundle nao esta no framework
+		newBundle = install(name, true);
+		if (newBundle != null) {
+			if(startBundle(newBundle))
+				return newBundle;
+		}
+		System.out.println("ERROR: Couldn't start bundle " + name);
+		return null;
 	}
 	
 	protected void stop(String name) {
-		String jarPath = search4Bundle(name);
+		String jarPath = search4BundleLocally(name);
 		Bundle newBundle = context.getBundle(jarPath);
 		
 		//verifica se esta ativo
-		if ((newBundle == null) || 
-				((newBundle.getState() != Bundle.ACTIVE))) {
+		if (!checkBundleActive(newBundle)) {
 			System.out.println("Bundle " + name +" not ACTIVE!");
 			return;
 		}
@@ -211,9 +250,12 @@ public class Launcher {
 	protected void uninstall(String name) {
 		Bundle newBundle = getBundleBySymbolicName(name);
 		
+		if(newBundle == null) {
+			System.out.println("ERROR: Bundle " + name  + " not found. Couldn't unninstall!");
+		}
+		
 		//verifica se esta ativo
-		if ((newBundle == null) || 
-				((newBundle.getState() == Bundle.UNINSTALLED))) {
+		if (!checkBundleInstalled(newBundle)) {
 			System.out.println("Bundle " + name +" not Installed!");
 			return;
 		}
@@ -223,15 +265,6 @@ public class Launcher {
 		} catch (BundleException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	protected Bundle getBundleBySymbolicName(String name) {
-		for (Bundle bundle : context.getBundles()) {
-			if (bundle.getSymbolicName().equals(name)) {
-				return bundle;
-			}
-		}
-		return null;
 	}
 	
 	protected void shutdown() throws BundleException {
