@@ -61,27 +61,27 @@ public class Launcher {
 		context = framework.getBundleContext();
 		
 		// framework bundles
-		start("org.eclipse.osgi.services_3.5.100.v20160504-1419.jar");
-		start("org.eclipse.osgi.util_3.3.100.v20150423-1351.jar");
-		start("org.eclipse.equinox.common_3.8.0.v20160509-1230.jar");
-		start("org.eclipse.equinox.registry_3.6.100.v20160223-2218.jar");
-		start("org.eclipse.equinox.preferences_3.6.1.v20160815-1406.jar");
-		start("org.eclipse.equinox.app_1.3.400.v20150715-1528.jar");
-		start("org.eclipse.core.jobs_3.8.0.v20160509-0411.jar");
-		start("org.eclipse.equinox.util_1.0.500.v20130404-1337.jar");
-		start("org.eclipse.equinox.ds_1.4.400.v20160226-2036.jar");
-		start("org.eclipse.core.contenttype_3.5.100.v20160418-1621.jar");
-		start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");
-		start("org.eclipse.equinox.security_1.2.200.v20150715-1528.jar");
-		start("org.eclipse.equinox.event_1.3.200.v20160324-1850.jar");
-		start("org.apache.felix.bundlerepository-2.0.10.jar");			//Adiciona o OBR
+		start("org.eclipse.osgi.services"); //_3.5.100.v20160504-1419.jar");
+		start("org.eclipse.osgi.util");	//_3.3.100.v20150423-1351.jar");
+		start("org.eclipse.equinox.common");	//_3.8.0.v20160509-1230.jar");
+		start("org.eclipse.equinox.registry");	//_3.6.100.v20160223-2218.jar");
+		start("org.eclipse.equinox.preferences");	//_3.6.1.v20160815-1406.jar");
+		start("org.eclipse.equinox.app");	//_1.3.400.v20150715-1528.jar");
+		start("org.eclipse.core.jobs");	//_3.8.0.v20160509-0411.jar");
+		start("org.eclipse.equinox.util");	//_1.0.500.v20130404-1337.jar");
+		start("org.eclipse.equinox.ds");	//_1.4.400.v20160226-2036.jar");
+		start("org.eclipse.core.contenttype");	//_3.5.100.v20160418-1621.jar");
+		start("org.eclipse.core.runtime");	//_3.12.0.v20160606-1342.jar");
+		start("org.eclipse.equinox.security");	//_1.2.200.v20150715-1528.jar");
+		start("org.eclipse.equinox.event");	//_1.3.200.v20160324-1850.jar");
+		start("org.apache.felix.bundlerepository");	//-2.0.10.jar");			//Adiciona o OBR
 		//start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");
 		
 		// default shell
-		start("org.apache.felix.gogo.runtime_0.10.0.v201209301036.jar");
-		start("org.apache.felix.gogo.command_0.10.0.v201209301215.jar");
-		start("org.apache.felix.gogo.shell_0.10.0.v201212101605.jar");
-		start("org.eclipse.equinox.console_1.1.200.v20150929-1405.jar");
+		start("org.apache.felix.gogo.runtime");	//_0.10.0.v201209301036.jar");
+		start("org.apache.felix.gogo.command");	//_0.10.0.v201209301215.jar");
+		start("org.apache.felix.gogo.shell");	//_0.10.0.v201212101605.jar");
+		start("org.eclipse.equinox.console");	//_1.1.200.v20150929-1405.jar");
 		
 		
 		
@@ -98,7 +98,7 @@ public class Launcher {
 		return this.repoAdmin;
 	}
 
-	private String[] getJARs() {		//Considero que ja' possuo todos os pacotes que necessito prontos para instalacao
+	private String[] getJARs() {
 		if (jars == null) {
 			List<String> jarsList = new ArrayList<String>();
 			File pluginsDir = new File(PLUGINDIR);
@@ -112,10 +112,10 @@ public class Launcher {
 	
 	protected String search4Bundle(String name) {
 		String found = null;
-		if (name.endsWith(".jar")) {
+		if (name.endsWith(".jar")) {		//Veio o nome completo do bundle, so' falta formatar
 			return String.format("file:" + PLUGINDIR + "/%s", name);
 		}
-		for (String jar : getJARs()) {
+		for (String jar : getJARs()) {			//ideal seria buscar a versao mais recente (apesar de menos performatico)
 			if (jar.startsWith(name + "_") || jar.startsWith(name + "-")) {
 				found = String.format("file:" + PLUGINDIR + "/%s", jar);
 				break;
@@ -128,42 +128,58 @@ public class Launcher {
 		return found;
 	}
 	
-	protected String pathToFile(String name) {
-		return String.format("file:" + PLUGINDIR + "/%s", name);
-	}
-
-	protected Bundle install(String name) {
-		Bundle newBundle = context.getBundle(pathToFile(name));		//atualmente nao estou pesquisando o bundle
-		//String jarPath = search4Bundle(name); 
+	protected Bundle installLocalBundle(String name) {
+		Bundle newBundle = context.getBundle(name);		//pathToFile(name));		//atualmente nao estou pesquisando o bundle
 		if ((newBundle != null) && 
-				((newBundle.getState() & 0x00000026) != 0x0)) {				//Verifica se esta ativo ou installed ou resolved
+				((newBundle.getState() & (Bundle.ACTIVE | Bundle.INSTALLED | Bundle.RESOLVED)) != 0x0)) {				//Verifica se esta ativo ou installed ou resolved
 			System.out.println("Bundle " + name +" already installed!");
 			return newBundle;
 		}
 		try {
-			newBundle = context.installBundle(pathToFile(name));
-			System.out.println("Bundle " + name +" installed!");
+			newBundle = context.installBundle(name);
+			//System.out.println("Bundle " + name +" installed!");
 			return newBundle;
 		} catch (BundleException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	protected Bundle start(String name) {
-		//String jarPath = search4Bundle(name);
-		Bundle newBundle = context.getBundle(pathToFile(name));
+
+	protected Bundle install(String name) {
+		Bundle newBundle = null;
+		String jarPath = search4Bundle(name);
 		
-		//verifica se ja esta ativo
-		if ((newBundle != null) && 
-				((newBundle.getState() == Bundle.ACTIVE))) {
-			System.out.println("Bundle " + name +" already ACTIVE!");
+		if (jarPath != null) {
+			newBundle = installLocalBundle(jarPath);
+			System.out.println("Bundle " + name +" installed!");
 			return newBundle;
 		}
+		else {	//Bundle not found locally
+			//repoAdmin
+		}
 		
-		
-		newBundle = install(name);
+		return null;
+	}
+	
+	protected Boolean checkBundleActive(Bundle bundle) {
+		if ((bundle != null) && 
+				((bundle.getState() == Bundle.ACTIVE))) {
+			System.out.println("Bundle " + bundle.getSymbolicName() +" already ACTIVE!");
+			return true;
+		}
+		return false;
+	}
+	
+	protected Bundle start(String name) {
+		String jarPath = search4Bundle(name);
+		Bundle newBundle = context.getBundle(jarPath);		//pathToFile(name));		//a funcao pathtofile esta quebrada
+																	//vai vir agora so o symbolic name
+		if(checkBundleActive(newBundle))
+			return newBundle;
+
+		newBundle = installLocalBundle(jarPath);
 		if (newBundle != null) {
+			System.out.println("Bundle " + name +" installed!");
 			try {
 				newBundle.start();
 			} catch (BundleException e) {
@@ -175,7 +191,8 @@ public class Launcher {
 	}
 	
 	protected void stop(String name) {
-		Bundle newBundle = context.getBundle(pathToFile(name));
+		String jarPath = search4Bundle(name);
+		Bundle newBundle = context.getBundle(jarPath);
 		
 		//verifica se esta ativo
 		if ((newBundle == null) || 
@@ -192,7 +209,7 @@ public class Launcher {
 	}
 	
 	protected void uninstall(String name) {
-		Bundle newBundle = context.getBundle(pathToFile(name));
+		Bundle newBundle = getBundleBySymbolicName(name);
 		
 		//verifica se esta ativo
 		if ((newBundle == null) || 
@@ -206,6 +223,15 @@ public class Launcher {
 		} catch (BundleException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected Bundle getBundleBySymbolicName(String name) {
+		for (Bundle bundle : context.getBundles()) {
+			if (bundle.getSymbolicName().equals(name)) {
+				return bundle;
+			}
+		}
+		return null;
 	}
 	
 	protected void shutdown() throws BundleException {

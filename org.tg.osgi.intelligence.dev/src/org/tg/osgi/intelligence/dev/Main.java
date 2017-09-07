@@ -40,7 +40,7 @@ public class Main {
 		System.out.println("---------------------------");
 		launcher.getRepoAdm().printListResources(null);
 		System.out.println("---------------------------");
-		launcher.getRepoAdm().deployResource("(symbolicname=org.apache.felix.webconsole)", 0);
+		launcher.getRepoAdm().deployResource("(symbolicname=org.apache.felix.webconsole)", 0x00010);		//start bundle!
 		System.out.println("End of execution!");
 
 	}

@@ -139,11 +139,11 @@ public class RepositoryAdm {
 		}
 	}
 	
-	public Reason[] deploy(Resource resource, int opt) {
+	public Reason[] deploy(Resource resource, int opt) {		//deve retornar um bundle!!	
 		Resolver resolver = this.repoAdmin.resolver();
-		
 		resolver.add(resource);
 		int resolveAttempt = 5; 
+		
         while (resolveAttempt-- > 0) 
         {
         	try { 
@@ -173,9 +173,10 @@ public class RepositoryAdm {
 	 * @param filterExpr 
 	 * @param opt
 	 * */
-	public void deployResource(String filterExpr, int opt) {
+	public void deployResource(String filterExpr, int opt) {	//deve retornar o bundle!!!!
 		Resource[] resource = null;
 		Reason[] reasons = null;
+		
 		
 		resource = getListResources(filterExpr);
 		
@@ -184,7 +185,8 @@ public class RepositoryAdm {
 						         				filterExpr + " in any known repository!");
 			return;
 		}
-		reasons = deploy(selectNewestVersion(resource), opt);		// pega o primeiro da lista
+			
+		reasons = deploy(selectNewestVersion(resource), opt);
 		if (reasons == null) return;	//deploy successfull
 		
 		//trying to deploy dependencies recursively... Check if needed!
