@@ -21,9 +21,10 @@ import org.apache.felix.bundlerepository.*;
 public class Launcher {
 	
 	public static final String PLUGINDIR = "C:/Users/jpaul/Downloads/Programs/Eclipse/Equinox/plugins";
+	public static final int START = 0x00010;
 	public static final String USERDIR = PLUGINDIR + "/user";
 	private static String[] jars = null;
-	private static String[] libs = null;
+	//private static String[] libs = null;
 	private Framework framework = null;
 	private RepositoryAdm repoAdmin = null;
 	private BundleContext context;
@@ -75,10 +76,10 @@ public class Launcher {
 		start("org.eclipse.equinox.security");
 		start("org.eclipse.equinox.event");
 		start("org.apache.felix.bundlerepository");		//Adiciona o OBR
-		//start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");
+		//start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");	//runtime do eclipse
 		
 		// default shell
-		start("org.apache.felix.gogo.runtime");
+		start("org.apache.felix.gogo.runtime");	//runtime do felix
 		start("org.apache.felix.gogo.command");
 		start("org.apache.felix.gogo.shell");
 		start("org.eclipse.equinox.console");
@@ -127,6 +128,24 @@ public class Launcher {
 		return found;
 	}
 	
+	protected Bundle search4BundleRemotelly(String name, int shouldStart) {
+		String filterExpr = null;
+		
+		System.out.println("Lookin for bundle " + name + " remotelly...");
+		
+		if (name.endsWith(".jar")) {		//Veio o nome completo do bundle, so' falta formatar
+			System.out.println("ERROR: Bad Bundle Symbolic name format!");
+			return null;
+		}
+		
+		filterExpr = String.format("(symbolicname=" + name + ")");
+		repoAdmin.deployResource(filterExpr, shouldStart);
+		//MUST RETURN A BUNDLE
+
+		
+		return null;
+	}
+	
 	protected Bundle getBundleBySymbolicName(String name) {
 		for (Bundle bundle : context.getBundles()) {
 			if (bundle.getSymbolicName().equals(name)) {
@@ -160,7 +179,6 @@ public class Launcher {
 		if (checkBundleInstalled(newBundle)) {				//Verifica se esta ativo ou installed ou resolved
 			return newBundle;
 		}
-		
 		try {
 			newBundle = context.installBundle(name);
 			return newBundle;
@@ -170,21 +188,21 @@ public class Launcher {
 		return null;
 	}
 
-	protected Bundle install(String name, Boolean shouldStart) {
+	protected Bundle install(String name, int shouldStart) {
 		Bundle newBundle = null;
 		String jarPath = search4BundleLocally(name);
 		
 		if (jarPath != null) {
 			newBundle = installLocalBundle(jarPath);
 			if (newBundle == null) {
-				System.out.println("ERROR: Couldn't install bundle " + name);
+				System.out.println("ERROR: Couldn't install local bundle " + name);
 				return null;
 			}
-			System.out.println("Bundle " + name +" installed successfully!");
+			System.out.println("Local Bundle " + name +" installed successfully!");
 			return newBundle;
 		}
 		else {	//Bundle not found locally
-			//repoAdmin
+			search4BundleRemotelly(name, shouldStart);
 		}
 		
 		return null;
@@ -220,7 +238,7 @@ public class Launcher {
 		}
 		
 		//Bundle nao esta no framework
-		newBundle = install(name, true);
+		newBundle = install(name, START);
 		if (newBundle != null) {
 			if(startBundle(newBundle))
 				return newBundle;
