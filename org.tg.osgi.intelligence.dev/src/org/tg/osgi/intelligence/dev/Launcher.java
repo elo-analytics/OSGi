@@ -130,17 +130,21 @@ public class Launcher {
 	
 	protected Bundle search4BundleRemotelly(String name, int shouldStart) {
 		String filterExpr = null;
+		Boolean deployed = false;
 		
-		System.out.println("Lookin for bundle " + name + " remotelly...");
+		System.out.println("Looking for bundle " + name + " remotelly...");
 		
-		if (name.endsWith(".jar")) {		//Veio o nome completo do bundle, so' falta formatar
+		if (name.endsWith(".jar")) {
 			System.out.println("ERROR: Bad Bundle Symbolic name format!");
 			return null;
 		}
 		
 		filterExpr = String.format("(symbolicname=" + name + ")");
-		repoAdmin.deployResource(filterExpr, shouldStart);
-		//MUST RETURN A BUNDLE
+		deployed = repoAdmin.deployResource(filterExpr, shouldStart);
+		if (deployed) {		//Achou o bundle e instalou com sucesso!
+			return getBundleBySymbolicName(name);
+		}
+		
 
 		
 		return null;
@@ -158,7 +162,7 @@ public class Launcher {
 	protected Boolean checkBundleActive(Bundle bundle) {
 		if ((bundle != null) && 
 				((bundle.getState() == Bundle.ACTIVE))) {
-			System.out.println("Bundle " + bundle.getSymbolicName() +" already ACTIVE!");
+			//System.out.println("Bundle " + bundle.getSymbolicName() +" already ACTIVE!");
 			return true;
 		}
 		return false;
@@ -167,7 +171,7 @@ public class Launcher {
 	protected Boolean checkBundleInstalled(Bundle bundle) {
 		if ((bundle != null) && 
 				((bundle.getState() & (Bundle.ACTIVE | Bundle.INSTALLED | Bundle.RESOLVED)) != 0x0)) {				//Verifica se esta ativo ou installed ou resolved
-			System.out.println("Bundle " + bundle.getSymbolicName() +" already installed!");
+			//System.out.println("Bundle " + bundle.getSymbolicName() +" already installed!");
 			return true;
 		}
 		return false;
@@ -202,10 +206,10 @@ public class Launcher {
 			return newBundle;
 		}
 		else {	//Bundle not found locally
-			search4BundleRemotelly(name, shouldStart);
+			newBundle = search4BundleRemotelly(name, shouldStart);
+			if (newBundle == null) return null;
+			return newBundle;
 		}
-		
-		return null;
 	}
 	
 	protected Boolean startBundle(Bundle newBundle) {
@@ -239,12 +243,12 @@ public class Launcher {
 		
 		//Bundle nao esta no framework
 		newBundle = install(name, START);
-		if (newBundle != null) {
+		if (!checkBundleActive(newBundle)) {
 			if(startBundle(newBundle))
 				return newBundle;
 		}
-		System.out.println("ERROR: Couldn't start bundle " + name);
-		return null;
+		
+		return newBundle;
 	}
 	
 	protected void stop(String name) {

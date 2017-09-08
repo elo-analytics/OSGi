@@ -173,7 +173,7 @@ public class RepositoryAdm {
 	 * @param filterExpr 
 	 * @param opt
 	 * */
-	public void deployResource(String filterExpr, int opt) {	//deve retornar o bundle!!!!
+	public Boolean deployResource(String filterExpr, int opt) {	//deve retornar o bundle!!!!
 		Resource[] resource = null;
 		Reason[] reasons = null;
 		
@@ -183,17 +183,18 @@ public class RepositoryAdm {
 		if (resource == null) {
 			System.out.println("ERROR: Couldn't find bundle that matches " +
 						         				filterExpr + " in any known repository!");
-			return;
+			return false;
 		}
 			
 		reasons = deploy(selectNewestVersion(resource), opt);
-		if (reasons == null) return;	//deploy successfull
+		if (reasons == null) return true;	//deploy successfull
 		
 		//trying to deploy dependencies recursively... Check if needed!
 		for (int i = 0; i < reasons.length; i++) { 		
             System.out.println("Trying to resolve bundle: " + reasons[i]); 
             deployResource(reasons[i].getRequirement().getFilter(), opt);
         }
+		return false;
 	}
 	
 	private Resource selectNewestVersion(Resource[] resources) {

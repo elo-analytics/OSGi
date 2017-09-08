@@ -36,9 +36,9 @@ public class Main {
 		launcher.stop("org.equinoxosgi.toastDS.client.emergency_1.0.0.201706090824.jar");
 		*/
 		
-		launcher.getRepoAdm().listRepositories();
-		System.out.println("---------------------------");
-		launcher.getRepoAdm().printListResources(null);
+		//launcher.getRepoAdm().listRepositories();
+		//System.out.println("---------------------------");
+		//launcher.getRepoAdm().printListResources(null);
 		System.out.println("---------------------------");
 		launcher.start("org.apache.felix.webconsole");
 		//launcher.getRepoAdm().deployResource("(symbolicname=org.apache.felix.webconsole)", 0x00010);		//start bundle!
