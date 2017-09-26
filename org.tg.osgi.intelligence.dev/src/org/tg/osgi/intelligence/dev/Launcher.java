@@ -3,30 +3,38 @@ package org.tg.osgi.intelligence.dev;
 import java.util.List;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
+import org.osgi.framework.wiring.BundleRequirement;
+import org.osgi.framework.wiring.BundleRevision;
+import org.tg.osgi.intelligence.obr.LocalRepoAdm;
 import org.tg.osgi.intelligence.obr.RepositoryAdm;
-import org.apache.felix.bundlerepository.*;
+//import org.apache.felix.bundlerepository.*;
+import org.osgi.service.resolver.Resolver;
 
 
 public class Launcher {
 	
-	public static final String PLUGINDIR = "C:/Users/jpaul/Downloads/Programs/Eclipse/Equinox/plugins";
 	public static final int START = 0x00010;
-	public static final String USERDIR = PLUGINDIR + "/user";
-	private static String[] jars = null;
+	
+	
 	//private static String[] libs = null;
 	private Framework framework = null;
 	private RepositoryAdm repoAdmin = null;
+	private LocalRepoAdm localRepo = new LocalRepoAdm();
 	private BundleContext context;
 
 	Launcher() {
@@ -59,7 +67,8 @@ public class Launcher {
 		
 		System.out.println("OSGi Framework successfully started!");
 
-		context = framework.getBundleContext();
+		//context = framework.getBundleContext();
+		setContext();
 		
 		// framework bundles
 		start("org.eclipse.osgi.services");
@@ -89,6 +98,7 @@ public class Launcher {
 		//Repository 
 		repoAdmin = new RepositoryAdm(context);
 		repoAdmin.addRepository("http://felix.apache.org/obr/releases.xml");
+		//repoAdmin.addRepository("file:/C:/Users/jpaul/Documents/Workspaces/localrepo/repository.xml");
 		//repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
 		
 
@@ -98,36 +108,37 @@ public class Launcher {
 	RepositoryAdm getRepoAdm(){
 		return this.repoAdmin;
 	}
+	
+	public void setContext() {
+		context = framework.getBundleContext();
+		
+		context.addBundleListener(new BundleListener(){
+			@Override
+			public void bundleChanged(BundleEvent event) {
+				switch (event.getType()) {
+				case BundleEvent.RESOLVED:
+	                break;
+	            case BundleEvent.INSTALLED:
+	                break;
+				case BundleEvent.STARTED:
+	                break;
+	            case BundleEvent.UNINSTALLED:
+	            	System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Uninstalled!");
+	            	start(event.getBundle().getSymbolicName());
+	                break;
+				case BundleEvent.UNRESOLVED:
+					System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Unresolved!");
+					start(event.getBundle().getSymbolicName());
+	                break;
+				case BundleEvent.STOPPED:
+					System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Stopped!");
+					start(event.getBundle().getSymbolicName());
+	                break; 
+				}
+			}
+		});
+	}
 
-	private String[] getJARs() {
-		if (jars == null) {
-			List<String> jarsList = new ArrayList<String>();
-			File pluginsDir = new File(PLUGINDIR);
-			for (String jar : pluginsDir.list()) {
-				jarsList.add(jar);
-			}
-			jars = jarsList.toArray(new String[jarsList.size()]);
-		}
-		return jars;
-	}
-	
-	protected String search4BundleLocally(String name) {
-		String found = null;
-		if (name.endsWith(".jar")) {		//Veio o nome completo do bundle, so' falta formatar
-			return String.format("file:" + PLUGINDIR + "/%s", name);
-		}
-		for (String jar : getJARs()) {			//ideal seria buscar a versao mais recente (apesar de menos performatico)
-			if (jar.startsWith(name + "_") || jar.startsWith(name + "-")) {
-				found = String.format("file:" + PLUGINDIR + "/%s", jar);
-				break;
-			}
-		}
-		if (found == null) {
-			System.out.println("JAR for " + name + " not found in local repository");
-		}
-		return found;
-	}
-	
 	protected Bundle search4BundleRemotelly(String name, int shouldStart) {
 		String filterExpr = null;
 		Boolean deployed = false;
@@ -144,9 +155,7 @@ public class Launcher {
 		if (deployed) {		//Achou o bundle e instalou com sucesso!
 			return getBundleBySymbolicName(name);
 		}
-		
 
-		
 		return null;
 	}
 	
@@ -158,46 +167,13 @@ public class Launcher {
 		}
 		return null;
 	}
-	
-	protected Boolean checkBundleActive(Bundle bundle) {
-		if ((bundle != null) && 
-				((bundle.getState() == Bundle.ACTIVE))) {
-			//System.out.println("Bundle " + bundle.getSymbolicName() +" already ACTIVE!");
-			return true;
-		}
-		return false;
-	}
-	
-	protected Boolean checkBundleInstalled(Bundle bundle) {
-		if ((bundle != null) && 
-				((bundle.getState() & (Bundle.ACTIVE | Bundle.INSTALLED | Bundle.RESOLVED)) != 0x0)) {				//Verifica se esta ativo ou installed ou resolved
-			//System.out.println("Bundle " + bundle.getSymbolicName() +" already installed!");
-			return true;
-		}
-		return false;
-	}
-	
-	protected Bundle installLocalBundle(String name) {
-		Bundle newBundle = context.getBundle(name);
-		
-		if (checkBundleInstalled(newBundle)) {				//Verifica se esta ativo ou installed ou resolved
-			return newBundle;
-		}
-		try {
-			newBundle = context.installBundle(name);
-			return newBundle;
-		} catch (BundleException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	protected Bundle install(String name, int shouldStart) {
 		Bundle newBundle = null;
-		String jarPath = search4BundleLocally(name);
+		String jarPath = localRepo.search4BundleLocally(name);
 		
 		if (jarPath != null) {
-			newBundle = installLocalBundle(jarPath);
+			newBundle = localRepo.installLocalBundle(jarPath, context);
 			if (newBundle == null) {
 				System.out.println("ERROR: Couldn't install local bundle " + name);
 				return null;
@@ -212,25 +188,59 @@ public class Launcher {
 		}
 	}
 	
+	protected BundleRequirement[] getRequirements(Bundle bundle){
+		BundleRequirement[] req = null;
+		
+		return req;
+	}
+	
+	protected BundleRequirement[] getInnactiveRequirements(BundleRequirement[] allRequirements) {
+		BundleRequirement[] req = null;
+		
+		return req;
+	}
+	
+	protected Boolean resolveRequirements(Bundle bundle) {
+		Dictionary dict = bundle.getHeaders();
+		//System.out.println(dict.keys().toString());
+		BundleRequirement[] allRequirements = getRequirements(bundle);
+		BundleRequirement[] innactiveReqs = getInnactiveRequirements(allRequirements);
+		//System.out.println(dict.get(Bundle.Import-Package));
+		for (Enumeration<Object> e = dict.keys(); e.hasMoreElements();)
+		       System.out.println(e.nextElement());		/*
+		for (BundleRequirement req : innactiveReqs) {
+			if (start(req.toString()) != null) 
+				return true;
+		}
+		        */
+		return false;
+	}
+	
 	protected Boolean startBundle(Bundle newBundle) {
 		if (newBundle != null) {				//Bundle no framework
-			if (checkBundleActive(newBundle))	//Bundle ja esta ativo
+			if (localRepo.checkBundleActive(newBundle))	//Bundle ja esta ativo
 				return true;
-			else {								//bundle instalado, mas nao ativo
-				try {
-					newBundle.start();
-					System.out.println("Bundle " + newBundle.getSymbolicName() + " started successfully!");
-					return true;
-				} catch (BundleException e) {
-					//pegar dependencias caso nao consiga
-					e.printStackTrace();
+											//bundle instalado, mas nao ativo
+			try {
+				newBundle.start();
+				System.out.println("Bundle " + newBundle.getSymbolicName() + " started successfully!");
+				return true;
+			} catch (BundleException e) {
+				if (e.getType() == BundleException.RESOLVE_ERROR) {
+					//e.printStackTrace();	
+					if (!resolveRequirements(newBundle)) {
+						System.out.println("ERROR: Bundle " + newBundle.getSymbolicName() + " couldn't be resolved!");
+						return false;
+					}
 				}
 			}
+		
 		}
 		return false;
 	}
 	
 	protected Bundle start(String name) {
+		BundleListener listener;
 		Bundle newBundle = getBundleBySymbolicName(name);
 		
 		if (newBundle != null) {	//Bundle no framework
@@ -243,7 +253,7 @@ public class Launcher {
 		
 		//Bundle nao esta no framework
 		newBundle = install(name, START);
-		if (!checkBundleActive(newBundle)) {
+		if (!localRepo.checkBundleActive(newBundle)) {
 			if(startBundle(newBundle))
 				return newBundle;
 		}
@@ -251,12 +261,14 @@ public class Launcher {
 		return newBundle;
 	}
 	
+	
+	//Mudar essa função!!!!!!!!!
 	protected void stop(String name) {
-		String jarPath = search4BundleLocally(name);
+		String jarPath = localRepo.search4BundleLocally(name);
 		Bundle newBundle = context.getBundle(jarPath);
 		
 		//verifica se esta ativo
-		if (!checkBundleActive(newBundle)) {
+		if (!localRepo.checkBundleActive(newBundle)) {
 			System.out.println("Bundle " + name +" not ACTIVE!");
 			return;
 		}
@@ -276,7 +288,7 @@ public class Launcher {
 		}
 		
 		//verifica se esta ativo
-		if (!checkBundleInstalled(newBundle)) {
+		if (!localRepo.checkBundleInstalled(newBundle)) {
 			System.out.println("Bundle " + name +" not Installed!");
 			return;
 		}

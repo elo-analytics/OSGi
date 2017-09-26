@@ -191,7 +191,7 @@ public class RepositoryAdm {
 		
 		//trying to deploy dependencies recursively... Check if needed!
 		for (int i = 0; i < reasons.length; i++) { 		
-            System.out.println("Trying to resolve bundle: " + reasons[i]); 
+            System.out.println("Trying to resolve bundle: " + reasons[i].getRequirement().getName()); 
             deployResource(reasons[i].getRequirement().getFilter(), opt);
         }
 		return false;
