@@ -36,6 +36,7 @@ public class Launcher {
 	private RepositoryAdm repoAdmin = null;
 	private LocalRepoAdm localRepo = new LocalRepoAdm();
 	private BundleContext context;
+	//private Planejador 
 
 	Launcher() {
 
@@ -97,9 +98,10 @@ public class Launcher {
 		
 		//Repository 
 		repoAdmin = new RepositoryAdm(context);
-		repoAdmin.addRepository("http://felix.apache.org/obr/releases.xml");
-		//repoAdmin.addRepository("file:/C:/Users/jpaul/Documents/Workspaces/localrepo/repository.xml");
+		//repoAdmin.addRepository("http://felix.apache.org/obr/releases.xml");		
+		repoAdmin.addRepository("file:/C:/Users/jpaul/Documents/Workspaces/localrepo/repository.xml");
 		//repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
+		repoAdmin.printListResources(null);
 		
 
 		//System.out.println("Fim do construtor!");
@@ -124,7 +126,12 @@ public class Launcher {
 	                break;
 	            case BundleEvent.UNINSTALLED:
 	            	System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Uninstalled!");
-	            	start(event.getBundle().getSymbolicName());
+	            	Bundle b = start(event.getBundle().getSymbolicName());
+	            	/*
+	            	if (b ==null)
+	            			String = planejador.replaneja(contexto);
+	            			deployResources(String)
+	            			*/
 	                break;
 				case BundleEvent.UNRESOLVED:
 					System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Unresolved!");
@@ -261,11 +268,8 @@ public class Launcher {
 		return newBundle;
 	}
 	
-	
-	//Mudar essa função!!!!!!!!!
 	protected void stop(String name) {
-		String jarPath = localRepo.search4BundleLocally(name);
-		Bundle newBundle = context.getBundle(jarPath);
+		Bundle newBundle = getBundleBySymbolicName(name);
 		
 		//verifica se esta ativo
 		if (!localRepo.checkBundleActive(newBundle)) {
