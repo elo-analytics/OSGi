@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Antenna
+Bundle-SymbolicName: unb.tg.osgi.g2.impl.p4
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: unb.tg.osgi.g2.api,
+ unb.tg.osgi.g2.impl.p4.p5.api
+Provide-Capability: unb.tg.osgi;symbolicname="unb.tg.osgi.g2.api";version:Version=1.0
+Require-Capability: unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g2.impl.p4.p5.api)"
+Bundle-ActivationPolicy: lazy
+Service-Component: OSGI-INF/component.xml

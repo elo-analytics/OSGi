@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" name="unb.tg.osgi.g2.impl.p4.P4">
+   <implementation class="unb.tg.osgi.g2.impl.p4.P4"/>
+   <service>
+      <provide interface="unb.tg.osgi.g2.api.G2"/>
+   </service>
+   <reference bind="setP5" cardinality="1..1" interface="unb.tg.osgi.g2.impl.p4.p5.api.IP5" name="IP5" policy="static"/>
+</scr:component>

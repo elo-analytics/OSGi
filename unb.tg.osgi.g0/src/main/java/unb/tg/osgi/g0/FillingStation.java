@@ -38,11 +38,11 @@ public class FillingStation {
 				+ 	"Starting Filling Station Advisor\n"
 				+ 	"--------------------------------\n\n");
 		
-		System.out.println("G1: Get position - " + position.getPosition());
-		System.out.println("G2: Assess distance to empty - " + distance.getDistance2Empty());
-		System.out.println("G3: Recover info about nearby filling station - " + location.getNearbyStations());
-		System.out.println("G4: Decide more convenient - " + decision.makeDecision());
-		System.out.println("G5: Driver is notified - " + notification.getNotification());
+		System.out.println("(G1) Get position :\n	" + position.getPosition());
+		System.out.println("(G2) Assess distance to empty: \n	" + distance.getDistance2Empty());
+		System.out.println("(G3) Recover info about nearby filling station: \n	" + location.getNearbyStations());
+		System.out.println("(G4) Decide more convenient:\n	" + decision.makeDecision());
+		System.out.println("(G5) Driver is notified:\n	" + notification.getNotification());
 	}
 	
 	protected void deactivate () {
