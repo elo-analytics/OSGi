@@ -5,11 +5,15 @@ Bundle-SymbolicName: unb.tg.osgi.g0
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: fillingStation.jar
 Import-Package: unb.tg.osgi.g1.api,
- 				unb.tg.osgi.g2.api,
- 				unb.tg.osgi.g3.api
+ unb.tg.osgi.g2.api,
+ unb.tg.osgi.g3.api,
+ unb.tg.osgi.g4.api,
+ unb.tg.osgi.g5.api
 Bundle-ActivationPolicy: lazy
 Require-Capability: unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g1.api)",
  					unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g2.api)",
- 					unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g3.api)"
+ 					unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g3.api)",
+ 					unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g4.api)",
+ 					unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g5.api)"
 Service-Component: OSGI-INF/component.xml
 

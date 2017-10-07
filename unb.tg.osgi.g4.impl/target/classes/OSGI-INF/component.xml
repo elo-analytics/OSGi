@@ -5,4 +5,5 @@
       <provide interface="unb.tg.osgi.g4.api.G4"/>
    </service>
    <reference bind="setP12" cardinality="1..1" interface="unb.tg.osgi.g4.impl.p12.api.P12" name="P12" policy="static"/>
+   <reference bind="setP13" cardinality="1..1" interface="unb.tg.osgi.g4.impl.p13.api.P13" name="P13" policy="static"/>
 </scr:component>

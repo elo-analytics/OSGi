@@ -31,6 +31,16 @@
 			<artifactId>unb.tg.osgi.g3.api</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>unb.tg.osgi</groupId>
+			<artifactId>unb.tg.osgi.g4.api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>unb.tg.osgi</groupId>
+			<artifactId>unb.tg.osgi.g5.api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>
@@ -53,12 +63,16 @@
 						<Import-Package>
  							unb.tg.osgi.g1.api,
  							unb.tg.osgi.g2.api,
- 							unb.tg.osgi.g3.api
+ 							unb.tg.osgi.g3.api,
+ 							unb.tg.osgi.g4.api,
+ 							unb.tg.osgi.g5.api
  						</Import-Package>
  						<Require-Capability>
  							unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g1.api)",
  							unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g2.api)",
- 							unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g3.api)"
+ 							unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g3.api)",
+ 							unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g4.api)",
+ 							unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g5.api)"
  						</Require-Capability>
  						<Service-Component>OSGI-INF/component.xml</Service-Component>
 					</instructions>

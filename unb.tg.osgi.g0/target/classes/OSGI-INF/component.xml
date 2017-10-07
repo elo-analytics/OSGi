@@ -4,4 +4,6 @@
    <reference bind="setPosition" cardinality="1..1" interface="unb.tg.osgi.g1.api.G1" name="G1" policy="static"/>
    <reference bind="setDistance" cardinality="1..1" interface="unb.tg.osgi.g2.api.G2" name="G2" policy="static"/>
    <reference bind="setLocation" cardinality="1..1" interface="unb.tg.osgi.g3.api.G3" name="G3" policy="static"/>
+   <reference bind="setDecision" cardinality="1..1" interface="unb.tg.osgi.g4.api.G4" name="G4" policy="static"/>
+   <reference bind="setNotification" cardinality="1..1" interface="unb.tg.osgi.g5.api.G5" name="G5" policy="static"/>
 </scr:component>
