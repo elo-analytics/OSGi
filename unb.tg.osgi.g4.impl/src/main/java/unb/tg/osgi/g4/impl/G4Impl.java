@@ -18,7 +18,7 @@ public class G4Impl implements G4 {
 	}
 
 	public String makeDecision() {
-		return p12.getConstraints() + " AND\n	" + p13.chooseStation();
+		return p12.getConstraints() + "\n	" + p13.chooseStation();
 	}
 	
 	protected void activate() {

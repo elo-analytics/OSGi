@@ -25,6 +25,11 @@
 			<artifactId>unb.tg.osgi.g2.impl.p4.p5.api</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>unb.tg.osgi</groupId>
+			<artifactId>unb.tg.osgi.g2.impl.p4.p6.api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -49,10 +54,14 @@
 						<Bundle-Version>1.0.0</Bundle-Version>
 						<Import-Package>
 							unb.tg.osgi.g2.api,
-							unb.tg.osgi.g2.impl.p4.p5.api
+							unb.tg.osgi.g2.impl.p4.p5.api,
+							unb.tg.osgi.g2.impl.p4.p6.api
 						</Import-Package>
 						<Provide-Capability>unb.tg.osgi;symbolicname="unb.tg.osgi.g2.api";version:Version=1.0</Provide-Capability>
-						<Require-Capability>unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g2.impl.p4.p5.api)"</Require-Capability>
+						<Require-Capability>
+							unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g2.impl.p4.p5.api)",
+							unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g2.impl.p4.p6.api)"
+						</Require-Capability>
 						<Service-Component>OSGI-INF/component.xml</Service-Component>
 					</instructions>
 					<remoteOBR>localrepo</remoteOBR>

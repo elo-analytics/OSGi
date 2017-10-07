@@ -4,7 +4,7 @@ Bundle-Description: Implementation of the Goal 4 API with AND constrai
 Bundle-SymbolicName: unb.tg.osgi.g4.impl
 Built-By: jpaul
 Bundle-ManifestVersion: 2
-Bnd-LastModified: 1507389455276
+Bnd-LastModified: 1507408349928
 Import-Package: unb.tg.osgi.g4.api;version="1.0",unb.tg.osgi.g4.impl.p
  12.api;version="1.0",unb.tg.osgi.g4.impl.p13.api;version="1.0"
 Require-Capability: unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g4.

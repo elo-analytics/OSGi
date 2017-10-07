@@ -5,7 +5,7 @@ Bundle-Description: System that gives directions to a vehicle’s driv
 Bundle-SymbolicName: unb.tg.osgi.g0
 Built-By: jpaul
 Bundle-ManifestVersion: 2
-Bnd-LastModified: 1507395247241
+Bnd-LastModified: 1507405731446
 Import-Package: unb.tg.osgi.g1.api;version="1.0",unb.tg.osgi.g2.api;ve
  rsion="1.0",unb.tg.osgi.g3.api;version="1.0",unb.tg.osgi.g4.api;versi
  on="1.0",unb.tg.osgi.g5.api;version="1.0"
