@@ -3,6 +3,7 @@ package org.tg.osgi.intelligence.dev;
 import java.util.List;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import org.osgi.framework.wiring.BundleRequirement;
 import org.osgi.framework.wiring.BundleRevision;
 import org.tg.osgi.intelligence.obr.LocalRepoAdm;
 import org.tg.osgi.intelligence.obr.RepositoryAdm;
+import org.tg.osgi.intelligence.plan.Planner;
 //import org.apache.felix.bundlerepository.*;
 import org.osgi.service.resolver.Resolver;
 
@@ -36,7 +38,7 @@ public class Launcher {
 	private RepositoryAdm repoAdmin = null;
 	private LocalRepoAdm localRepo = new LocalRepoAdm();
 	private BundleContext context;
-	//private Planejador 
+	private Planner planner = new Planner();
 
 	Launcher() {
 
@@ -85,6 +87,7 @@ public class Launcher {
 		start("org.eclipse.core.runtime");
 		start("org.eclipse.equinox.security");
 		start("org.eclipse.equinox.event");
+		//start("org.osgi.service.component.annotations");
 		start("org.apache.felix.bundlerepository");		//Adiciona o OBR
 		//start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");	//runtime do eclipse
 		
@@ -100,6 +103,7 @@ public class Launcher {
 		repoAdmin = new RepositoryAdm(context);
 		//repoAdmin.addRepository("http://felix.apache.org/obr/releases.xml");		
 		repoAdmin.addRepository("file:/C:/Users/jpaul/Documents/Workspaces/localrepo/repository.xml");
+		repoAdmin.addRepository("file:/C:/Users/jpaul/.m2/repository/repository.xml");
 		//repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
 		repoAdmin.printListResources(null);
 		
@@ -126,7 +130,7 @@ public class Launcher {
 	                break;
 	            case BundleEvent.UNINSTALLED:
 	            	System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Uninstalled!");
-	            	Bundle b = start(event.getBundle().getSymbolicName());
+	            	//Bundle b = start(event.getBundle().getSymbolicName());
 	            	/*
 	            	if (b ==null)
 	            			String = planejador.replaneja(contexto);
@@ -135,15 +139,19 @@ public class Launcher {
 	                break;
 				case BundleEvent.UNRESOLVED:
 					System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Unresolved!");
-					start(event.getBundle().getSymbolicName());
+					//start(event.getBundle().getSymbolicName());
 	                break;
 				case BundleEvent.STOPPED:
 					System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Stopped!");
-					start(event.getBundle().getSymbolicName());
+					//start(event.getBundle().getSymbolicName());
 	                break; 
 				}
 			}
 		});
+	}
+	
+	public void executeGoal(String goal, List<String> constraints) {
+		System.out.println(Arrays.toString(constraints.toArray()));
 	}
 
 	protected Bundle search4BundleRemotelly(String name, int shouldStart) {

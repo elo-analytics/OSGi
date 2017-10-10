@@ -4,6 +4,9 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="plugins"/>
-	<classpathentry kind="lib" path="C:/Users/jpaul/Documents/UnB/22017/TG/org.apache.felix.bundlerepository-2.0.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jpaul/Documents/UnB/22017/TG/org.apache.felix.bundlerepository-2.0.10.jar" sourcepath="/com.javaworld.sample.HelloService/TG/org.apache.felix.bundlerepository-2.0.10.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/filling-station-case-study"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/evaluation-commons"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/goalp-core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

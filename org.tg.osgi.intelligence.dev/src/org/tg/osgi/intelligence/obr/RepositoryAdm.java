@@ -149,17 +149,21 @@ public class RepositoryAdm {
         	try { 
         		if (resolver.resolve(opt)) 
         		{ 
-        			resolver.deploy(opt);
-        			System.out.println("Bundle " + resource.getSymbolicName() + "-"
+        			try {
+        				resolver.deploy(opt);
+        				System.out.println("Bundle " + resource.getSymbolicName() + "-"
         					+ resource.getVersion() + ".jar"
         					+ " downloaded from remote repository and sucessfully started!");
-        			return null;
+        				return null;
+        			} catch (NullPointerException e) {
+        				System.out.println("ERROR: Could not deploy bundle");
+        			}
         		} else { 
         			Reason[] reqs = resolver.getUnsatisfiedRequirements(); 
         			return reqs;	//Resolve sem sucesso, mas completo.
         		} 
         	} catch (IllegalStateException e) { 
-        		// If resolve unsuccessful, try again 
+        		// If resolve unsuccessful, try again  
         		if (resolveAttempt == 0) 
         			e.printStackTrace(); 
         	}
