@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-Description: System that gives directions to a vehicle’s driv
+ er about nearby filling stations 		(gas, petrol or charge station) th
+ at can be reached conveniently.
+Bundle-SymbolicName: unb.tg.osgi.g0
+Built-By: jpaul
+Bundle-ManifestVersion: 2
+Bnd-LastModified: 1507405731446
+Import-Package: unb.tg.osgi.g1.api;version="1.0",unb.tg.osgi.g2.api;ve
+ rsion="1.0",unb.tg.osgi.g3.api;version="1.0",unb.tg.osgi.g4.api;versi
+ on="1.0",unb.tg.osgi.g5.api;version="1.0"
+Require-Capability: unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g1.
+ api)",unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g2.api)",unb.tg.
+ osgi;filter:="(symbolicname=unb.tg.osgi.g3.api)",unb.tg.osgi;filter:=
+ "(symbolicname=unb.tg.osgi.g4.api)",unb.tg.osgi;filter:="(symbolicnam
+ e=unb.tg.osgi.g5.api)"
+Service-Component: OSGI-INF/component.xml
+Tool: Bnd-0.0.357
+Export-Package: unb.tg.osgi.g0;uses:="unb.tg.osgi.g5.api,unb.tg.osgi.g
+ 3.api,unb.tg.osgi.g4.api,unb.tg.osgi.g2.api,unb.tg.osgi.g1.api"
+Bundle-Name: G0: Filling Station Advisor
+Bundle-Version: 1.0.0
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.8.0_131
+

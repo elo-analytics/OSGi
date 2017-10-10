@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-Description: API for the P4 of the Filling Station Advisory
+Bundle-SymbolicName: unb.tg.osgi.g2.impl.p4.p6.api
+Built-By: jpaul
+Bundle-ManifestVersion: 2
+Bnd-LastModified: 1507405516247
+Import-Package: unb.tg.osgi.g2.impl.p4.p6.api;version="1.0"
+Tool: Bnd-0.0.357
+Export-Package: unb.tg.osgi.g2.impl.p4.p6.api;version="1.0.0"
+Bundle-Name: P6: Calculate Distance to empty (API)
+Bundle-Version: 1.0.0
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.8.0_131
+

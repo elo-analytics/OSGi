@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-Description: Implementation of the Goal 5 API
+Bundle-SymbolicName: unb.tg.osgi.g5.impl.p18
+Built-By: jpaul
+Bundle-ManifestVersion: 2
+Bnd-LastModified: 1507396191222
+Import-Package: unb.tg.osgi.g5.api;version="1.0"
+Service-Component: OSGI-INF/component.xml
+Tool: Bnd-0.0.357
+Provide-Capability: unb.tg.osgi;symbolicname="unb.tg.osgi.g5.api";vers
+ ion:Version=1.0
+Bundle-Name: P18: Alerting by visual notification
+Bundle-Version: 1.0.0
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.8.0_131
+

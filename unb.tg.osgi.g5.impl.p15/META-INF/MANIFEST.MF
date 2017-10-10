@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: P18
+Bundle-SymbolicName: unb.tg.osgi.g5.impl.p15
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: gps.jar
+Import-Package: unb.tg.osgi.g5.api,
+ unb.tg.osgi.g5.impl.p15.api
+Provide-Capability: unb.tg.osgi;symbolicname="unb.tg.osgi.g5.api";version:Version=1.0
+Require-Capability: unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g5.impl.p15.api)"
+Bundle-ActivationPolicy: lazy
+Service-Component: OSGI-INF/component.xml

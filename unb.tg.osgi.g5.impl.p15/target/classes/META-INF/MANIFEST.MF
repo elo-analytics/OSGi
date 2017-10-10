@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-Description: Implementation of the Goal 5 API
+Bundle-SymbolicName: unb.tg.osgi.g5.impl.p15
+Built-By: jpaul
+Bundle-ManifestVersion: 2
+Bnd-LastModified: 1507401107995
+Import-Package: unb.tg.osgi.g5.api;version="1.0",unb.tg.osgi.g5.impl.p
+ 15.api;version="1.0"
+Require-Capability: unb.tg.osgi;filter:="(symbolicname=unb.tg.osgi.g5.
+ impl.p15.api)"
+Service-Component: OSGI-INF/component.xml
+Tool: Bnd-0.0.357
+Provide-Capability: unb.tg.osgi;symbolicname="unb.tg.osgi.g5.api";vers
+ ion:Version=1.0
+Bundle-Name: P18: Alert user by sound
+Bundle-Version: 1.0.0
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.8.0_131
+
