@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -24,6 +26,10 @@ import org.osgi.framework.wiring.BundleRevision;
 import org.tg.osgi.intelligence.obr.LocalRepoAdm;
 import org.tg.osgi.intelligence.obr.RepositoryAdm;
 import org.tg.osgi.intelligence.plan.Planner;
+
+import goalp.model.Artifact;
+import goalp.systems.PlanSelectionException;
+
 //import org.apache.felix.bundlerepository.*;
 import org.osgi.service.resolver.Resolver;
 
@@ -38,10 +44,17 @@ public class Launcher {
 	private RepositoryAdm repoAdmin = null;
 	private LocalRepoAdm localRepo = new LocalRepoAdm();
 	private BundleContext context;
-	private Planner planner = new Planner();
+	private Planner planner;
+	private List<String> configBundles;
+	private List<String> userBundles;
+	private List<String> scenarioResources;
 
 	Launcher() {
-
+		
+		configBundles = new ArrayList<String>();
+		userBundles = new ArrayList<String>();
+		scenarioResources = new ArrayList<String>();
+		
 		FrameworkFactory frameworkFactory = ServiceLoader.load(FrameworkFactory.class).iterator().next();
 
 		Map<String, String> config = new HashMap<String, String>();
@@ -74,28 +87,26 @@ public class Launcher {
 		setContext();
 		
 		// framework bundles
-		start("org.eclipse.osgi.services");
-		start("org.eclipse.osgi.util");
-		start("org.eclipse.equinox.common");
-		start("org.eclipse.equinox.registry");
-		start("org.eclipse.equinox.preferences");
-		start("org.eclipse.equinox.app");
-		start("org.eclipse.core.jobs");
-		start("org.eclipse.equinox.util");
-		start("org.eclipse.equinox.ds");
-		start("org.eclipse.core.contenttype");
-		start("org.eclipse.core.runtime");
-		start("org.eclipse.equinox.security");
-		start("org.eclipse.equinox.event");
-		//start("org.osgi.service.component.annotations");
-		start("org.apache.felix.bundlerepository");		//Adiciona o OBR
-		//start("org.eclipse.core.runtime_3.12.0.v20160606-1342.jar");	//runtime do eclipse
+		start("org.eclipse.osgi.services", configBundles);
+		start("org.eclipse.osgi.util", configBundles);
+		start("org.eclipse.equinox.common", configBundles);
+		start("org.eclipse.equinox.registry", configBundles);
+		start("org.eclipse.equinox.preferences", configBundles);
+		start("org.eclipse.equinox.app", configBundles);
+		start("org.eclipse.core.jobs", configBundles);
+		start("org.eclipse.equinox.util", configBundles);
+		start("org.eclipse.equinox.ds", configBundles);
+		start("org.eclipse.core.contenttype", configBundles);
+		start("org.eclipse.core.runtime", configBundles);
+		start("org.eclipse.equinox.security", configBundles);
+		start("org.eclipse.equinox.event", configBundles);
+		start("org.apache.felix.bundlerepository", configBundles);		//Adiciona o OBR
 		
 		// default shell
-		start("org.apache.felix.gogo.runtime");	//runtime do felix
-		start("org.apache.felix.gogo.command");
-		start("org.apache.felix.gogo.shell");
-		start("org.eclipse.equinox.console");
+		start("org.apache.felix.gogo.runtime", configBundles);	//runtime do felix
+		start("org.apache.felix.gogo.command", configBundles);
+		start("org.apache.felix.gogo.shell", configBundles);
+		start("org.eclipse.equinox.console", configBundles);
 		
 		
 		
@@ -125,6 +136,7 @@ public class Launcher {
 				case BundleEvent.RESOLVED:
 	                break;
 	            case BundleEvent.INSTALLED:
+	            	uninstall(event.getBundle().getSymbolicName());
 	                break;
 				case BundleEvent.STARTED:
 	                break;
@@ -150,8 +162,34 @@ public class Launcher {
 		});
 	}
 	
-	public void executeGoal(String goal, List<String> constraints) {
-		System.out.println(Arrays.toString(constraints.toArray()));
+	public void addScenarioResource (String resource) {
+		if (!scenarioResources.contains(resource))
+			scenarioResources.add(resource);
+	}
+	
+	public void removeScenarioResource (String resource) {
+		if (!scenarioResources.contains(resource)) {
+			System.out.println("ERROR: Resource not present in current scenario");
+			return;
+		}
+		scenarioResources.remove(resource);
+	}
+	
+	public void executeGoal(String goal) {
+		planner = new Planner (goal, scenarioResources);
+		try {
+			planner.exec();
+		} catch (PlanSelectionException e) {
+			System.out.println("ERROR: Couldn't do the planning");
+			e.printStackTrace();
+		}
+		if (planner.getResult() == null) {
+			System.out.println("ERROR: Could not do the planning for " + goal);
+			return;
+		}
+		
+		for (Artifact artifact  : planner.getResult().getResultPlan().plan.getSelectedArtifacts())
+			start(artifact.getIdentification(), userBundles);
 	}
 
 	protected Bundle search4BundleRemotelly(String name, int shouldStart) {
@@ -203,34 +241,6 @@ public class Launcher {
 		}
 	}
 	
-	protected BundleRequirement[] getRequirements(Bundle bundle){
-		BundleRequirement[] req = null;
-		
-		return req;
-	}
-	
-	protected BundleRequirement[] getInnactiveRequirements(BundleRequirement[] allRequirements) {
-		BundleRequirement[] req = null;
-		
-		return req;
-	}
-	
-	protected Boolean resolveRequirements(Bundle bundle) {
-		Dictionary dict = bundle.getHeaders();
-		//System.out.println(dict.keys().toString());
-		BundleRequirement[] allRequirements = getRequirements(bundle);
-		BundleRequirement[] innactiveReqs = getInnactiveRequirements(allRequirements);
-		//System.out.println(dict.get(Bundle.Import-Package));
-		for (Enumeration<Object> e = dict.keys(); e.hasMoreElements();)
-		       System.out.println(e.nextElement());		/*
-		for (BundleRequirement req : innactiveReqs) {
-			if (start(req.toString()) != null) 
-				return true;
-		}
-		        */
-		return false;
-	}
-	
 	protected Boolean startBundle(Bundle newBundle) {
 		if (newBundle != null) {				//Bundle no framework
 			if (localRepo.checkBundleActive(newBundle))	//Bundle ja esta ativo
@@ -242,11 +252,8 @@ public class Launcher {
 				return true;
 			} catch (BundleException e) {
 				if (e.getType() == BundleException.RESOLVE_ERROR) {
-					//e.printStackTrace();	
-					if (!resolveRequirements(newBundle)) {
-						System.out.println("ERROR: Bundle " + newBundle.getSymbolicName() + " couldn't be resolved!");
-						return false;
-					}
+					// Plan order of bundles didn't work
+					System.out.println("ERROR: While starting remote bundle. Probably the plan order didn't work!");
 				}
 			}
 		
@@ -254,7 +261,7 @@ public class Launcher {
 		return false;
 	}
 	
-	protected Bundle start(String name) {
+	protected Bundle start(String name, List<String> bundleList) {
 		BundleListener listener;
 		Bundle newBundle = getBundleBySymbolicName(name);
 		
@@ -269,10 +276,14 @@ public class Launcher {
 		//Bundle nao esta no framework
 		newBundle = install(name, START);
 		if (!localRepo.checkBundleActive(newBundle)) {
-			if(startBundle(newBundle))
+			if(startBundle(newBundle)){
+				bundleList.add(name);
 				return newBundle;
+			}
+				
 		}
 		
+		bundleList.add(name);
 		return newBundle;
 	}
 	
