@@ -25,4 +25,11 @@
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>TG</name>
+			<type>2</type>
+			<location>C:/Users/jpaul/Documents/UnB/22017/TG</location>
+		</link>
+	</linkedResources>
 </projectDescription>

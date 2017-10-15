@@ -3,6 +3,7 @@ package org.tg.osgi.intelligence.plan;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 import goalp.evaluation.ExperimentTimerImpl;
@@ -23,7 +24,11 @@ import goalp.exputil.ExperimentTimer;
 import goalp.exputil.WriteService;
 import goalp.model.Artifact;
 import goalp.model.ArtifactBuilder;
+import goalp.model.DeploymentRequest;
+import goalp.model.DeploymentRequestBuilder;
+import goalp.systems.Agent;
 import goalp.systems.AgentBuilder;
+import goalp.systems.DeploymentPlanningResult;
 import goalp.systems.IDeploymentPlanner;
 import goalp.systems.IRepository;
 import goalp.systems.RepositoryBuilder;
@@ -73,6 +78,45 @@ public class Planner extends AbstractStudyCase {
 	
 	public ExecResult getResult() {
 		return result;
+	}
+	
+	public void scenario(String experimentName, Consumer<AgentBuilder> exec) {
+		
+		//log.info("Executing experiment {}", experimentName); 
+		//run execution
+		timer.begin();
+		
+		result = new ExecResult();
+		DeploymentRequest request = DeploymentRequestBuilder.create()
+				.addGoal(experimentName)
+				.build();
+		
+		
+		result.setRequest(request);
+
+		AgentBuilder agentBuilder =  AgentBuilder.create();
+		exec.accept(agentBuilder);
+		
+		Agent agent = agentBuilder.build();
+
+		DeploymentPlanningResult planningResult;
+		try {
+			timer.split("setup:" + experimentName);
+			planningResult = planner.doPlan(request, agent);
+			Number responseResult = timer.split("execution:" + experimentName);
+			//ds.log(experimentName, responseResult);
+		} catch (Exception e) {
+			//log.error(e.getMessage());
+			throw new RuntimeException(e);
+		}
+		
+		result.setResultPlan(planningResult);
+		Number responseResult = timer.split("execution:" + experimentName);
+
+		validateResult(result);
+		timer.split("validation");
+		//echo(result.getResultPlan(), responseResult);
+		timer.finish();
 	}
 	
 	@Override

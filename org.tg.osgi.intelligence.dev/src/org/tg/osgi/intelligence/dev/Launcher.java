@@ -1,28 +1,21 @@
 package org.tg.osgi.intelligence.dev;
 
 import java.util.List;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
-import org.osgi.framework.wiring.BundleRequirement;
-import org.osgi.framework.wiring.BundleRevision;
 import org.tg.osgi.intelligence.obr.LocalRepoAdm;
 import org.tg.osgi.intelligence.obr.RepositoryAdm;
 import org.tg.osgi.intelligence.plan.Planner;
@@ -30,21 +23,14 @@ import org.tg.osgi.intelligence.plan.Planner;
 import goalp.model.Artifact;
 import goalp.systems.PlanSelectionException;
 
-//import org.apache.felix.bundlerepository.*;
-import org.osgi.service.resolver.Resolver;
-
-
 public class Launcher {
 	
 	public static final int START = 0x00010;
-	
-	
-	//private static String[] libs = null;
+
 	private Framework framework = null;
 	private RepositoryAdm repoAdmin = null;
 	private LocalRepoAdm localRepo = new LocalRepoAdm();
 	private BundleContext context;
-	private Planner planner;
 	private List<String> configBundles;
 	private List<String> userBundles;
 	private List<String> scenarioResources;
@@ -83,7 +69,6 @@ public class Launcher {
 		
 		System.out.println("OSGi Framework successfully started!");
 
-		//context = framework.getBundleContext();
 		setContext();
 		
 		// framework bundles
@@ -116,8 +101,6 @@ public class Launcher {
 		repoAdmin.addRepository("file:/C:/Users/jpaul/Documents/Workspaces/localrepo/repository.xml");
 		repoAdmin.addRepository("file:/C:/Users/jpaul/.m2/repository/repository.xml");
 		//repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
-		repoAdmin.printListResources(null);
-		
 
 		//System.out.println("Fim do construtor!");
 	}
@@ -136,60 +119,93 @@ public class Launcher {
 				case BundleEvent.RESOLVED:
 	                break;
 	            case BundleEvent.INSTALLED:
-	            	uninstall(event.getBundle().getSymbolicName());
 	                break;
 				case BundleEvent.STARTED:
 	                break;
 	            case BundleEvent.UNINSTALLED:
 	            	System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Uninstalled!");
-	            	//Bundle b = start(event.getBundle().getSymbolicName());
-	            	/*
-	            	if (b ==null)
-	            			String = planejador.replaneja(contexto);
-	            			deployResources(String)
-	            			*/
 	                break;
 				case BundleEvent.UNRESOLVED:
 					System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Unresolved!");
-					//start(event.getBundle().getSymbolicName());
 	                break;
 				case BundleEvent.STOPPED:
 					System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Stopped!");
-					//start(event.getBundle().getSymbolicName());
 	                break; 
 				}
 			}
 		});
 	}
 	
-	public void addScenarioResource (String resource) {
-		if (!scenarioResources.contains(resource))
-			scenarioResources.add(resource);
-	}
-	
-	public void removeScenarioResource (String resource) {
-		if (!scenarioResources.contains(resource)) {
-			System.out.println("ERROR: Resource not present in current scenario");
-			return;
-		}
-		scenarioResources.remove(resource);
-	}
-	
-	public void executeGoal(String goal) {
-		planner = new Planner (goal, scenarioResources);
+	public Planner getPlan (String goal, List<String> resources) {
+		Planner planner = new Planner (goal, resources);
 		try {
 			planner.exec();
 		} catch (PlanSelectionException e) {
 			System.out.println("ERROR: Couldn't do the planning");
 			e.printStackTrace();
+			return null;
 		}
 		if (planner.getResult() == null) {
 			System.out.println("ERROR: Could not do the planning for " + goal);
+			return null;
+		}
+		return planner;
+	}
+	
+	public void addScenarioResource (String resource, String goalReached) {
+		Planner tempPlan = getPlan (goalReached, Arrays.asList(resource));
+		if (tempPlan == null) {
+			System.out.println("ERROR: Could not get partial plan");
 			return;
 		}
-		
+		for (Artifact artifact  : tempPlan.getResult().getResultPlan().plan.getSelectedArtifacts())
+			start(artifact.getIdentification(), userBundles);
+		if (!scenarioResources.contains(resource))
+			scenarioResources.add(resource);
+	}
+	
+	public void removeScenarioResource (String resource, String bundleName) {
+		if (!scenarioResources.contains(resource)) {
+			System.out.println("ERROR: Resource not present in current scenario");
+			return;
+		}
+		uninstall(bundleName, userBundles);
+		scenarioResources.remove(resource);
+		System.out.println("Resource " + resource + " not available anymore...");
+		System.out.println("Uninstalling bundle " + bundleName);
+	}
+	
+	public void executeGoal(String goal) {
+		Planner planner = getPlan(goal, scenarioResources);
+		if (planner == null) return;
 		for (Artifact artifact  : planner.getResult().getResultPlan().plan.getSelectedArtifacts())
 			start(artifact.getIdentification(), userBundles);
+	}
+	
+	public void removeAllBundles () {
+		Iterator<String> iter = userBundles.iterator();
+		while(iter.hasNext()) {
+			String bundleName = iter.next();
+			uninstall(bundleName, userBundles);
+			iter.remove();
+		}
+	}
+	
+	public void removeAllScenarioRes () {
+		Iterator<String> iter = scenarioResources.iterator();
+		while(iter.hasNext()) {
+			String resource = iter.next();
+			iter.remove();
+		}
+	}
+	
+	public void cleanScenario () {
+		removeAllBundles();
+		removeAllScenarioRes();
+	}
+	
+	public void printBundles () {
+		System.out.println(Arrays.asList(userBundles));
 	}
 
 	protected Bundle search4BundleRemotelly(String name, int shouldStart) {
@@ -262,7 +278,6 @@ public class Launcher {
 	}
 	
 	protected Bundle start(String name, List<String> bundleList) {
-		BundleListener listener;
 		Bundle newBundle = getBundleBySymbolicName(name);
 		
 		if (newBundle != null) {	//Bundle no framework
@@ -303,7 +318,7 @@ public class Launcher {
 		}
 	}
 	
-	protected void uninstall(String name) {
+	protected void uninstall(String name, List<String> listBundles) {
 		Bundle newBundle = getBundleBySymbolicName(name);
 		
 		if(newBundle == null) {
