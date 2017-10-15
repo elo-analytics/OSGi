@@ -19,6 +19,8 @@ import org.osgi.framework.launch.FrameworkFactory;
 import org.tg.osgi.intelligence.obr.LocalRepoAdm;
 import org.tg.osgi.intelligence.obr.RepositoryAdm;
 import org.tg.osgi.intelligence.plan.Planner;
+import goalp.evaluation.ExperimentTimerImpl;
+import goalp.evaluation.ExperimentTimerImpl.Split;
 
 import goalp.model.Artifact;
 import goalp.systems.PlanSelectionException;
@@ -34,12 +36,15 @@ public class Launcher {
 	private List<String> configBundles;
 	private List<String> userBundles;
 	private List<String> scenarioResources;
+	private ExperimentTimerImpl timer = new ExperimentTimerImpl();
 
 	Launcher() {
 		
 		configBundles = new ArrayList<String>();
 		userBundles = new ArrayList<String>();
 		scenarioResources = new ArrayList<String>();
+		
+		timer.begin();
 		
 		FrameworkFactory frameworkFactory = ServiceLoader.load(FrameworkFactory.class).iterator().next();
 
@@ -103,10 +108,21 @@ public class Launcher {
 		//repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
 
 		//System.out.println("Fim do construtor!");
+		timer.split("Setup environment");
 	}
 	
 	RepositoryAdm getRepoAdm(){
 		return this.repoAdmin;
+	}
+	
+	public ExperimentTimerImpl getTimer () {
+		return timer;
+	}
+	
+	public void printTimerResults () {
+		for (Split split : timer.result()) {
+			System.out.println(split.toString());
+		}
 	}
 	
 	public void setContext() {

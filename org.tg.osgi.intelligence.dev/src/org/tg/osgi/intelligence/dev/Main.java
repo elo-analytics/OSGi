@@ -1,12 +1,11 @@
 package org.tg.osgi.intelligence.dev;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 import org.osgi.framework.BundleException;
+
+
 
 public class Main {
 	private static void pressAnyKeyToContinue() {
@@ -20,8 +19,6 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException, BundleException {
 		
-		Scanner reader = new Scanner(System.in);  // Reading from System.in
-		
 		Launcher launcher = new Launcher();
 		
 		// S1
@@ -33,8 +30,9 @@ public class Main {
 		launcher.addScenarioResource("sound", "unb.tg.osgi.g5.impl.p15");
 		
 		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.getTimer().split("Study case 1");
 		
-		pressAnyKeyToContinue();
+		//pressAnyKeyToContinue();
 		
 		// S2
 		System.out.println("--------- Starting test case S2 ---------");
@@ -45,8 +43,9 @@ public class Main {
 		launcher.addScenarioResource("synthesized_voice", "unb.tg.osgi.g5.impl.p15");
 		
 		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.getTimer().split("Study case 2");
 		
-		pressAnyKeyToContinue();
+		//pressAnyKeyToContinue();
 		
 		// S3
 		System.out.println("--------- Starting test case S3 ---------");
@@ -56,8 +55,9 @@ public class Main {
 		launcher.addScenarioResource("synthesized_voice", "unb.tg.osgi.g5.impl.p15");
 		
 		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.getTimer().split("Study case 3");
 			
-		pressAnyKeyToContinue();
+		//pressAnyKeyToContinue();
 
 		// S4
 		System.out.println("--------- Starting test case S4 ---------");
@@ -68,8 +68,9 @@ public class Main {
 		launcher.addScenarioResource("visible_graphical_interface", "unb.tg.osgi.g5");
 		
 		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.getTimer().split("Study case 4");
 		
-		pressAnyKeyToContinue();
+		//pressAnyKeyToContinue();
 		
 		// S5
 		System.out.println("--------- Starting test case S5 ---------");
@@ -80,8 +81,9 @@ public class Main {
 		launcher.addScenarioResource("interface_navigation_system", "unb.tg.osgi.g5");
 		
 		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.getTimer().split("Study case 5");
 		
-		pressAnyKeyToContinue();
+		//pressAnyKeyToContinue();
 		
 		// S6
 		System.out.println("--------- Starting test case S6 ---------");
@@ -91,8 +93,9 @@ public class Main {
 		launcher.addScenarioResource("synthesized_voice", "unb.tg.osgi.g5.impl.p15");
 		
 		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.getTimer().split("Study case 6");
 		
-		pressAnyKeyToContinue();
+		//pressAnyKeyToContinue();
 		
 		// S7
 		System.out.println("--------- Starting test case S7 ---------");
@@ -102,13 +105,18 @@ public class Main {
 		launcher.addScenarioResource("interface_navigation_system", "unb.tg.osgi.g5");
 		
 		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.getTimer().split("Study case 7");
 		
-		pressAnyKeyToContinue();
+		//pressAnyKeyToContinue();
 
 		
 		launcher.cleanScenario();
 		launcher.shutdown();
+		launcher.getTimer().split("Shutdown");
 		System.out.println("End of execution!");
+		launcher.getTimer().finish();
+		
+		launcher.printTimerResults();
 
 	}
 
