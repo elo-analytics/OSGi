@@ -21,7 +21,7 @@ import org.tg.osgi.intelligence.obr.RepositoryAdm;
 import org.tg.osgi.intelligence.plan.Planner;
 import goalp.evaluation.ExperimentTimerImpl;
 import goalp.evaluation.ExperimentTimerImpl.Split;
-
+import goalp.evaluation.model.ExecResult;
 import goalp.model.Artifact;
 import goalp.systems.PlanSelectionException;
 
@@ -37,6 +37,7 @@ public class Launcher {
 	private List<String> userBundles;
 	private List<String> scenarioResources;
 	private ExperimentTimerImpl timer = new ExperimentTimerImpl();
+	Planner planner = new Planner();
 
 	Launcher() {
 		
@@ -74,29 +75,29 @@ public class Launcher {
 		
 		System.out.println("OSGi Framework successfully started!");
 
-		setContext();
+		context = framework.getBundleContext();
 		
 		// framework bundles
-		start("org.eclipse.osgi.services", configBundles);
-		start("org.eclipse.osgi.util", configBundles);
-		start("org.eclipse.equinox.common", configBundles);
-		start("org.eclipse.equinox.registry", configBundles);
-		start("org.eclipse.equinox.preferences", configBundles);
-		start("org.eclipse.equinox.app", configBundles);
-		start("org.eclipse.core.jobs", configBundles);
-		start("org.eclipse.equinox.util", configBundles);
-		start("org.eclipse.equinox.ds", configBundles);
-		start("org.eclipse.core.contenttype", configBundles);
-		start("org.eclipse.core.runtime", configBundles);
-		start("org.eclipse.equinox.security", configBundles);
-		start("org.eclipse.equinox.event", configBundles);
-		start("org.apache.felix.bundlerepository", configBundles);		//Adiciona o OBR
+		start("org.eclipse.osgi.services");
+		start("org.eclipse.osgi.util");
+		start("org.eclipse.equinox.common");
+		start("org.eclipse.equinox.registry");
+		start("org.eclipse.equinox.preferences");
+		start("org.eclipse.equinox.app");
+		start("org.eclipse.core.jobs");
+		start("org.eclipse.equinox.util");
+		start("org.eclipse.equinox.ds");
+		start("org.eclipse.core.contenttype");
+		start("org.eclipse.core.runtime");
+		start("org.eclipse.equinox.security");
+		start("org.eclipse.equinox.event");
+		start("org.apache.felix.bundlerepository");		//Adiciona o OBR
 		
 		// default shell
-		start("org.apache.felix.gogo.runtime", configBundles);	//runtime do felix
-		start("org.apache.felix.gogo.command", configBundles);
-		start("org.apache.felix.gogo.shell", configBundles);
-		start("org.eclipse.equinox.console", configBundles);
+		start("org.apache.felix.gogo.runtime");	//runtime do felix
+		start("org.apache.felix.gogo.command");
+		start("org.apache.felix.gogo.shell");
+		start("org.eclipse.equinox.console");
 		
 		
 		
@@ -106,7 +107,9 @@ public class Launcher {
 		repoAdmin.addRepository("file:/C:/Users/jpaul/Documents/Workspaces/localrepo/repository.xml");
 		repoAdmin.addRepository("file:/C:/Users/jpaul/.m2/repository/repository.xml");
 		//repoAdmin.addRepository("http://sling.apache.org/obr/sling.xml");
-
+		
+		
+		setListener();
 		//System.out.println("Fim do construtor!");
 		timer.split("Setup environment");
 	}
@@ -125,8 +128,8 @@ public class Launcher {
 		}
 	}
 	
-	public void setContext() {
-		context = framework.getBundleContext();
+	public void setListener() {
+		
 		
 		context.addBundleListener(new BundleListener(){
 			@Override
@@ -137,8 +140,10 @@ public class Launcher {
 	            case BundleEvent.INSTALLED:
 	                break;
 				case BundleEvent.STARTED:
+					userBundles.add(event.getBundle().getSymbolicName());
 	                break;
 	            case BundleEvent.UNINSTALLED:
+	            	userBundles.remove(event.getBundle().getSymbolicName());
 	            	System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Uninstalled!");
 	                break;
 				case BundleEvent.UNRESOLVED:
@@ -152,57 +157,73 @@ public class Launcher {
 		});
 	}
 	
-	public Planner getPlan (String goal, List<String> resources) {
-		Planner planner = new Planner (goal, resources);
-		try {
-			planner.exec();
-		} catch (PlanSelectionException e) {
-			System.out.println("ERROR: Couldn't do the planning");
-			e.printStackTrace();
-			return null;
-		}
-		if (planner.getResult() == null) {
-			System.out.println("ERROR: Could not do the planning for " + goal);
-			return null;
-		}
-		return planner;
+	
+	
+	
+	/*
+	 * Adds a scenario resource to the context of the environment
+	 */
+	public void addScenarioResource (String resource) {
+		if (!planner.getScenario().contains(resource))
+			planner.getScenario().add(resource);
 	}
 	
-	public void addScenarioResource (String resource, String goalReached) {
-		Planner tempPlan = getPlan (goalReached, Arrays.asList(resource));
-		if (tempPlan == null) {
-			System.out.println("ERROR: Could not get partial plan");
+	
+	/*
+	 * Make a new plan to recover from a crash of a environment context
+	 * */
+	public void replan() {
+		List<String> newPlan = new ArrayList<String>();
+		List<String> newBundles = null;
+		List<String> toRemove = null;
+		
+		planner.getPlan();
+		
+		if (planner == null) {
+			System.out.println("ERROR: Sorry, You don't have enough resources to replan");
 			return;
 		}
-		for (Artifact artifact  : tempPlan.getResult().getResultPlan().plan.getSelectedArtifacts())
-			start(artifact.getIdentification(), userBundles);
-		if (!scenarioResources.contains(resource))
-			scenarioResources.add(resource);
+		for (Artifact art : planner.getResult().getResultPlan().plan.getSelectedArtifacts()) {
+				newPlan.add(art.getIdentification());
+		}
+		
+		newBundles = new ArrayList<String>(newPlan);
+		toRemove = new ArrayList<String>(userBundles);
+		
+		newBundles.removeAll(userBundles);	// new bundles to install
+		toRemove.removeAll(newPlan);		// old bundles to remove
+		
+		for (String bundle : toRemove)
+			uninstall(bundle);
+		
+		for (String bundle : newBundles)
+			start(bundle);
 	}
 	
-	public void removeScenarioResource (String resource, String bundleName) {
-		if (!scenarioResources.contains(resource)) {
+	public void removeScenarioResource (String resource) {
+		if (!planner.getScenario().contains(resource)) {
 			System.out.println("ERROR: Resource not present in current scenario");
 			return;
 		}
-		uninstall(bundleName, userBundles);
-		scenarioResources.remove(resource);
+		planner.getScenario().remove(resource);
 		System.out.println("Resource " + resource + " not available anymore...");
-		System.out.println("Uninstalling bundle " + bundleName);
+		System.out.println("Replanning...");
+		replan();
 	}
 	
 	public void executeGoal(String goal) {
-		Planner planner = getPlan(goal, scenarioResources);
+		planner.setExpName(goal);
+		planner.getPlan();
 		if (planner == null) return;
 		for (Artifact artifact  : planner.getResult().getResultPlan().plan.getSelectedArtifacts())
-			start(artifact.getIdentification(), userBundles);
+			start(artifact.getIdentification());
 	}
 	
 	public void removeAllBundles () {
 		Iterator<String> iter = userBundles.iterator();
 		while(iter.hasNext()) {
 			String bundleName = iter.next();
-			uninstall(bundleName, userBundles);
+			uninstall(bundleName);
 			iter.remove();
 		}
 	}
@@ -293,7 +314,7 @@ public class Launcher {
 		return false;
 	}
 	
-	protected Bundle start(String name, List<String> bundleList) {
+	protected Bundle start(String name) {
 		Bundle newBundle = getBundleBySymbolicName(name);
 		
 		if (newBundle != null) {	//Bundle no framework
@@ -308,13 +329,13 @@ public class Launcher {
 		newBundle = install(name, START);
 		if (!localRepo.checkBundleActive(newBundle)) {
 			if(startBundle(newBundle)){
-				bundleList.add(name);
+				//bundleList.add(name);
 				return newBundle;
 			}
 				
 		}
 		
-		bundleList.add(name);
+		//bundleList.add(name);
 		return newBundle;
 	}
 	
@@ -334,7 +355,7 @@ public class Launcher {
 		}
 	}
 	
-	protected void uninstall(String name, List<String> listBundles) {
+	protected void uninstall(String name) {
 		Bundle newBundle = getBundleBySymbolicName(name);
 		
 		if(newBundle == null) {
@@ -361,5 +382,25 @@ public class Launcher {
 		} catch (BundleException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	
+	/*
+	 * Adds a scenario resource to the environment and fetch related bundles from repository.
+	 */
+	public void addScenarioResourceG (String resource, String goalReached) {
+		Planner tempPlan = new Planner(goalReached, Arrays.asList(resource)); 		
+		tempPlan.getPlan();
+		
+		if (tempPlan.getResult() == null) {
+			System.out.print("ERROR: Could not get partial plan");
+		}
+		
+		for (Artifact artifact  : tempPlan.getResult().getResultPlan().plan.getSelectedArtifacts())
+			start(artifact.getIdentification());
+			
+		if (!planner.getScenario().contains(resource))
+			planner.getScenario().add(resource);
 	}
 }

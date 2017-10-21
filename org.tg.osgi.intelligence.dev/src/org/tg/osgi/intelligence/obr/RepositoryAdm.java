@@ -152,7 +152,7 @@ public class RepositoryAdm {
 			return false;
 		}
 
-		reasons = deploy(selectNewestVersion(resource), opt);
+		reasons = deploy(selectBestComponent(resource), opt);
 		if (reasons == null)
 			return true; // deploy successfull
 
@@ -164,7 +164,7 @@ public class RepositoryAdm {
 		return false;
 	}
 
-	private Resource selectNewestVersion(Resource[] resources) {
+	private Resource selectBestComponent(Resource[] resources) {
 		int index = -1;
 		Version version = null;
 		for (int i = 0; (resources != null) && (i < resources.length); i++) {

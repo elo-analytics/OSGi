@@ -24,16 +24,22 @@ public class Main {
 		// S1
 		System.out.println("--------- Starting test case S1 ---------");
 		
-		launcher.addScenarioResource("antenna_triangulation", "unb.tg.osgi.g1");
-		launcher.addScenarioResource("protocol_get_fuel_level_and_mileage", "unb.tg.osgi.g2.impl.p4.p5");
-		launcher.addScenarioResource("storage", "unb.tg.osgi.g3");
-		launcher.addScenarioResource("sound", "unb.tg.osgi.g5.impl.p15");
+		launcher.addScenarioResource("antenna_triangulation");
+		launcher.addScenarioResource("protocol_get_fuel_level_and_mileage");
+		launcher.addScenarioResource("storage");
+		launcher.addScenarioResource("sound");
 		
 		launcher.executeGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 1");
 		
-		//pressAnyKeyToContinue();
+		launcher.addScenarioResource("gps_capability");
+		launcher.removeScenarioResource("antenna_triangulation");
 		
+		pressAnyKeyToContinue();
+		
+		//launcher.removeScenarioResource(resource, bundleName);
+		
+		/*
 		// S2
 		System.out.println("--------- Starting test case S2 ---------");
 		launcher.cleanScenario();
@@ -45,7 +51,7 @@ public class Main {
 		launcher.executeGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 2");
 		
-		//pressAnyKeyToContinue();
+		pressAnyKeyToContinue();
 		
 		// S3
 		System.out.println("--------- Starting test case S3 ---------");
@@ -57,7 +63,7 @@ public class Main {
 		launcher.executeGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 3");
 			
-		//pressAnyKeyToContinue();
+		pressAnyKeyToContinue();
 
 		// S4
 		System.out.println("--------- Starting test case S4 ---------");
@@ -70,7 +76,7 @@ public class Main {
 		launcher.executeGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 4");
 		
-		//pressAnyKeyToContinue();
+		pressAnyKeyToContinue();
 		
 		// S5
 		System.out.println("--------- Starting test case S5 ---------");
@@ -83,7 +89,7 @@ public class Main {
 		launcher.executeGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 5");
 		
-		//pressAnyKeyToContinue();
+		pressAnyKeyToContinue();
 		
 		// S6
 		System.out.println("--------- Starting test case S6 ---------");
@@ -95,7 +101,7 @@ public class Main {
 		launcher.executeGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 6");
 		
-		//pressAnyKeyToContinue();
+		pressAnyKeyToContinue();
 		
 		// S7
 		System.out.println("--------- Starting test case S7 ---------");
@@ -107,7 +113,7 @@ public class Main {
 		launcher.executeGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 7");
 		
-		//pressAnyKeyToContinue();
+		pressAnyKeyToContinue();
 
 		
 		launcher.cleanScenario();
@@ -117,6 +123,7 @@ public class Main {
 		launcher.getTimer().finish();
 		
 		launcher.printTimerResults();
+		*/
 
 	}
 

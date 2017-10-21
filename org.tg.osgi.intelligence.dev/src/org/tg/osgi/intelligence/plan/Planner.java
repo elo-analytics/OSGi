@@ -1,5 +1,6 @@
 package org.tg.osgi.intelligence.plan;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -9,11 +10,6 @@ import java.util.logging.Logger;
 import goalp.evaluation.ExperimentTimerImpl;
 import goalp.evaluation.fillingstation.FillingStationStudyCase;
 import goalp.evaluation.model.ExecResult;
-
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
-
-import javax.inject.Inject;
 
 //import javax.inject.Inject;
 
@@ -31,12 +27,8 @@ import goalp.systems.AgentBuilder;
 import goalp.systems.DeploymentPlanningResult;
 import goalp.systems.IDeploymentPlanner;
 import goalp.systems.IRepository;
+import goalp.systems.PlanSelectionException;
 import goalp.systems.RepositoryBuilder;
-
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
-import org.jboss.weld.environment.se.bindings.Parameters;
-import org.jboss.weld.environment.se.events.ContainerInitialized;
 
 public class Planner extends AbstractStudyCase {
 	
@@ -63,9 +55,37 @@ public class Planner extends AbstractStudyCase {
 		
 		this.experimentName = experimentName;
 		this.scenario = scenario;
-		
 		timer = new ExperimentTimerImpl();
-		
+	}
+	
+	public Planner (){
+		experimentName = "";
+		scenario = new ArrayList<String>();
+		timer = new ExperimentTimerImpl();
+	}
+	
+	public void setExpName (String expName) {
+		experimentName = expName;
+	}
+	
+	public void setTimer () {
+		timer = new ExperimentTimerImpl();
+	}
+	
+	public void setScenario (List<String> scenario) {
+		this.scenario = scenario;
+	}
+	
+	public String getExpName () {
+		return experimentName;
+	}
+	
+	public List<String> getScenario () {
+		return scenario;
+	}
+	
+	public ExperimentTimerImpl getTimer () {
+		return (ExperimentTimerImpl) timer;
 	}
 	
 	@Override
@@ -77,6 +97,25 @@ public class Planner extends AbstractStudyCase {
 	}
 	
 	public ExecResult getResult() {
+		return result;
+	}
+	
+	public void setResult (ExecResult res) {
+		result = res;
+	}
+	
+	public ExecResult getPlan () {
+		try {
+			exec();
+		} catch (PlanSelectionException e) {
+			System.out.println("ERROR: Could not do the planning for " + experimentName);
+			e.printStackTrace();
+			return null;
+		}
+		if (getResult() == null) {
+			System.out.println("ERROR: Could not do the planning for " + experimentName);
+			return null;
+		}
 		return result;
 	}
 	
