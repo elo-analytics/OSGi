@@ -3,11 +3,14 @@ package org.tg.osgi.intelligence.dev;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 
+import org.apache.felix.bundlerepository.Resource;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -33,7 +36,6 @@ public class Launcher {
 	private RepositoryAdm repoAdmin = null;
 	private LocalRepoAdm localRepo = new LocalRepoAdm();
 	private BundleContext context;
-	private List<String> configBundles;
 	private List<String> userBundles;
 	private List<String> scenarioResources;
 	private ExperimentTimerImpl timer = new ExperimentTimerImpl();
@@ -41,7 +43,6 @@ public class Launcher {
 
 	Launcher() {
 		
-		configBundles = new ArrayList<String>();
 		userBundles = new ArrayList<String>();
 		scenarioResources = new ArrayList<String>();
 		
@@ -138,9 +139,13 @@ public class Launcher {
 				case BundleEvent.RESOLVED:
 	                break;
 	            case BundleEvent.INSTALLED:
+	            	System.out.println("LISTENTER: Bundle " + event.getBundle().getSymbolicName() + " installed!");
+	            	if (!userBundles.contains(event.getBundle().getSymbolicName()))
+	            		userBundles.add(event.getBundle().getSymbolicName());
 	                break;
 				case BundleEvent.STARTED:
-					userBundles.add(event.getBundle().getSymbolicName());
+					if (!userBundles.contains(event.getBundle().getSymbolicName()))
+						userBundles.add(event.getBundle().getSymbolicName());
 	                break;
 	            case BundleEvent.UNINSTALLED:
 	            	userBundles.remove(event.getBundle().getSymbolicName());
@@ -168,12 +173,18 @@ public class Launcher {
 			planner.getScenario().add(resource);
 	}
 	
+	public List<String> artifactsToString (Set<Artifact> artifacts) {
+		List<String> bundleNames = new ArrayList<String>();
+		for (Artifact art : artifacts)
+			bundleNames.add(art.getIdentification());
+		return bundleNames;
+	}
 	
 	/*
 	 * Make a new plan to recover from a crash of a environment context
 	 * */
 	public void replan() {
-		List<String> newPlan = new ArrayList<String>();
+		List<String> newPlan = null;
 		List<String> newBundles = null;
 		List<String> toRemove = null;
 		
@@ -183,9 +194,7 @@ public class Launcher {
 			System.out.println("ERROR: Sorry, You don't have enough resources to replan");
 			return;
 		}
-		for (Artifact art : planner.getResult().getResultPlan().plan.getSelectedArtifacts()) {
-				newPlan.add(art.getIdentification());
-		}
+		newPlan = artifactsToString(planner.getResult().getResultPlan().plan.getSelectedArtifacts());
 		
 		newBundles = new ArrayList<String>(newPlan);
 		toRemove = new ArrayList<String>(userBundles);
@@ -197,7 +206,7 @@ public class Launcher {
 			uninstall(bundle);
 		
 		for (String bundle : newBundles)
-			start(bundle);
+			executeGoal(bundle, newBundles);
 	}
 	
 	public void removeScenarioResource (String resource) {
@@ -211,14 +220,79 @@ public class Launcher {
 		replan();
 	}
 	
-	public void executeGoal(String goal) {
+	public Boolean executeGoal (String bundleName, List<String> plan) {
+		Boolean found;
+		Resource[] resource = null;
+		Bundle bundle = null;
+		String delims = "[,]";
+		
+		if (userBundles.contains(bundleName)) return true;
+		bundle = install(bundleName, START);
+		Dictionary<String, String> headers = bundle.getHeaders();
+		
+		if (headers == null) {
+			System.out.println("ERROR: Could not get header for bundle " + bundleName);
+		}
+		
+		
+		String requireCapability = headers.get("Require-Capability");
+		if (requireCapability == null) return true;	//doesn't have dependencies
+		//Header Parse
+		String[] requirements = requireCapability.split(delims);
+		for (String req : requirements) {
+			String requirement = req.substring(req.indexOf("\"")+1, req.length()-1);
+			System.out.println(requirement);
+			found = false;
+			resource = repoAdmin.getListResources(requirement);
+			if (resource == null) {
+				System.out.println("ERROR: Couldn't find bundle that matches " + requirement + " in any known repository!");
+				return false;
+			}
+			for (Resource r : resource) {
+				System.out.println(r.getSymbolicName());
+				if (plan.contains(r.getSymbolicName())){
+					if (!userBundles.contains(r.getSymbolicName())) {
+						executeGoal(r.getSymbolicName(), plan);
+						found = true;
+						break;
+					}
+					found = true;
+					break;
+				}
+			}
+			if (found == false) {
+				System.out.println("ERROR: Could not satisfy some dependency");
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public void setGoal(String goal) {
+		List<String> plan = null;
+		
 		planner.setExpName(goal);
 		planner.getPlan();
 		if (planner == null) return;
-		for (Artifact artifact  : planner.getResult().getResultPlan().plan.getSelectedArtifacts())
-			start(artifact.getIdentification());
+		plan = artifactsToString(planner.getResult().getResultPlan().plan.getSelectedArtifacts());
+		for (String subgoal : plan) {
+			if (!executeGoal(subgoal, plan)) {
+				System.out.println("Error: Could not perform " + goal);
+				break;
+			}
+		}
+		removeUnnecessaryBundles(plan);
+		System.out.println("Goal " + goal + " performed successfully!") ;
 	}
 	
+	private void removeUnnecessaryBundles(List<String> plan) {
+		List<String> toRemove = new ArrayList<String>(userBundles);
+		toRemove.removeAll(plan);		// extra bundles that may have been installed unnecessarily 
+		
+		for (String bundle : toRemove)
+			uninstall(bundle);
+	}
+
 	public void removeAllBundles () {
 		Iterator<String> iter = userBundles.iterator();
 		while(iter.hasNext()) {

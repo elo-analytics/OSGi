@@ -29,13 +29,15 @@ public class Main {
 		launcher.addScenarioResource("storage");
 		launcher.addScenarioResource("sound");
 		
-		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.setGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 1");
+		
+		pressAnyKeyToContinue();
 		
 		launcher.addScenarioResource("gps_capability");
 		launcher.removeScenarioResource("antenna_triangulation");
 		
-		pressAnyKeyToContinue();
+		
 		
 		//launcher.removeScenarioResource(resource, bundleName);
 		
