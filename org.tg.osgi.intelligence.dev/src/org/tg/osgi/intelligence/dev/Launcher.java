@@ -148,7 +148,8 @@ public class Launcher {
 						userBundles.add(event.getBundle().getSymbolicName());
 	                break;
 	            case BundleEvent.UNINSTALLED:
-	            	userBundles.remove(event.getBundle().getSymbolicName());
+	            	if (userBundles.contains(event.getBundle().getSymbolicName()))
+	            		userBundles.remove(event.getBundle().getSymbolicName());
 	            	System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Uninstalled!");
 	                break;
 				case BundleEvent.UNRESOLVED:
@@ -202,11 +203,11 @@ public class Launcher {
 		newBundles.removeAll(userBundles);	// new bundles to install
 		toRemove.removeAll(newPlan);		// old bundles to remove
 		
-		for (String bundle : toRemove)
-			uninstall(bundle);
-		
 		for (String bundle : newBundles)
 			executeGoal(bundle, newBundles);
+		
+		for (String bundle : toRemove)
+			uninstall(bundle);
 	}
 	
 	public void removeScenarioResource (String resource) {
@@ -282,7 +283,6 @@ public class Launcher {
 			}
 		}
 		removeUnnecessaryBundles(plan);
-		System.out.println("Goal " + goal + " performed successfully!") ;
 	}
 	
 	private void removeUnnecessaryBundles(List<String> plan) {
@@ -294,20 +294,14 @@ public class Launcher {
 	}
 
 	public void removeAllBundles () {
-		Iterator<String> iter = userBundles.iterator();
-		while(iter.hasNext()) {
-			String bundleName = iter.next();
-			uninstall(bundleName);
-			iter.remove();
+		for (int i = userBundles.size()-1; i >= 0; i--) {
+			uninstall(userBundles.get(i));
 		}
 	}
 	
 	public void removeAllScenarioRes () {
-		Iterator<String> iter = scenarioResources.iterator();
-		while(iter.hasNext()) {
-			String resource = iter.next();
-			iter.remove();
-		}
+		for (int i = planner.getScenario().size()-1; i >= 0; i--)
+			planner.getScenario().remove(i);
 	}
 	
 	public void cleanScenario () {
