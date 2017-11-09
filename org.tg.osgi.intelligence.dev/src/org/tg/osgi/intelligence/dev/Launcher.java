@@ -203,8 +203,8 @@ public class Launcher {
 		newBundles.removeAll(userBundles);	// new bundles to install
 		toRemove.removeAll(newPlan);		// old bundles to remove
 		
-		for (String bundle : newBundles)
-			executeGoal(bundle, newBundles);
+		//for (String bundle : newBundles)
+		//	executeGoal(bundle, newBundles);
 		
 		for (String bundle : toRemove)
 			uninstall(bundle);
@@ -221,11 +221,24 @@ public class Launcher {
 		replan();
 	}
 	
-	public Boolean executeGoal (String bundleName, List<String> plan) {
+	public List<String> getReqCapHeader (String reqCapHeader) {
+		String delims = "[,]";
+		List<String> reqList = new ArrayList<String>(); 
+		
+		if (reqCapHeader == null) return null;
+		String[] requirements = reqCapHeader.split(delims);
+		for (String req : requirements) {
+			String requirement = req.substring(req.indexOf("\"")+1, req.length()-1);
+			reqList.add(requirement);
+		}
+		return reqList;
+	}
+	
+	public Boolean executeGoal (String bundleName, String [][] deploymentHelper) {
 		Boolean found;
 		Resource[] resource = null;
 		Bundle bundle = null;
-		String delims = "[,]";
+		List<String> requirements = null;
 		
 		if (userBundles.contains(bundleName)) return true;
 		bundle = install(bundleName, START);
@@ -233,31 +246,33 @@ public class Launcher {
 		
 		if (headers == null) {
 			System.out.println("ERROR: Could not get header for bundle " + bundleName);
+			return false;
 		}
 		
+		requirements = getReqCapHeader(headers.get("Require-Capability"));
+		if (requirements == null) return true;
 		
-		String requireCapability = headers.get("Require-Capability");
-		if (requireCapability == null) return true;	//doesn't have dependencies
-		//Header Parse
-		String[] requirements = requireCapability.split(delims);
 		for (String req : requirements) {
-			String requirement = req.substring(req.indexOf("\"")+1, req.length()-1);
-			System.out.println(requirement);
+			System.out.println("This is a requirement " + req);
 			found = false;
-			resource = repoAdmin.getListResources(requirement);
+			resource = repoAdmin.getListResources(req); 	// get list of bundles that match the given filter
 			if (resource == null) {
-				System.out.println("ERROR: Couldn't find bundle that matches " + requirement + " in any known repository!");
+				System.out.println("ERROR: Couldn't find bundle that matches " + req + " in any known repository!");
 				return false;
 			}
 			for (Resource r : resource) {
+				System.out.println("Got this resource: " + r.getSymbolicName());
+			}
+			/*
+			for (Resource r : resource) {
 				System.out.println(r.getSymbolicName());
-				if (plan.contains(r.getSymbolicName())){
+				if (plan.contains(r.getSymbolicName())){	//Take only the first bundle of the list
 					if (!userBundles.contains(r.getSymbolicName())) {
 						executeGoal(r.getSymbolicName(), plan);
 						found = true;
 						break;
 					}
-					found = true;
+					found = true;	//if it is already installed, it has no further dependencies
 					break;
 				}
 			}
@@ -265,24 +280,54 @@ public class Launcher {
 				System.out.println("ERROR: Could not satisfy some dependency");
 				return false;
 			}
+			*/
 		}
+		
 		return true;
+	}
+	
+	public static void printHelper(String mat[][])
+    {
+        // Loop through all rows
+        for (int i = 0; i < mat.length; i++) {
+            // Loop through all elements of current row
+            for (int j = 0; j < mat[i].length; j++)
+                System.out.print(mat[i][j] + " ");
+            System.out.println("\n");
+        }
+    }
+	
+	public String [][] setDeplHelper(List<String> plan) {
+		String [][] deploymentHelper =  new String [plan.size()][2];
+		int i = 0;
+		
+		for (String subgoal : plan) {
+			deploymentHelper[i][1] = null;
+			deploymentHelper[i][0] = subgoal;
+			i++;
+		}
+		return deploymentHelper;
 	}
 	
 	public void setGoal(String goal) {
 		List<String> plan = null;
+		String [][] deploymentHelper;
 		
 		planner.setExpName(goal);
 		planner.getPlan();
 		if (planner == null) return;
 		plan = artifactsToString(planner.getResult().getResultPlan().plan.getSelectedArtifacts());
+		
+		deploymentHelper = setDeplHelper(plan);
+		
 		for (String subgoal : plan) {
-			if (!executeGoal(subgoal, plan)) {
+			if (!executeGoal(subgoal, deploymentHelper)) {
 				System.out.println("Error: Could not perform " + goal);
 				break;
 			}
 		}
 		removeUnnecessaryBundles(plan);
+		
 	}
 	
 	private void removeUnnecessaryBundles(List<String> plan) {
