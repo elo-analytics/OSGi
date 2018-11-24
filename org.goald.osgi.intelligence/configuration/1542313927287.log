@@ -1,0 +1,73 @@
+!SESSION 2018-11-15 18:32:11.467 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+
+!ENTRY ProvideHealthSupport.impl 4 0 2018-11-15 18:32:11.468
+!MESSAGE [SCR] Circularity Exception found for component: Component[
+	name = ProvideHealthSupport.impl
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, provideHealthSupportImpl.ProvideHealthSupportImpl]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]
+!STACK 0
+org.eclipse.equinox.internal.ds.CircularityException
+	at org.eclipse.equinox.internal.ds.Resolver.processDependencyCycle(Resolver.java:1167)
+	at org.eclipse.equinox.internal.ds.Resolver.checkDependencies(Resolver.java:1134)
+	at org.eclipse.equinox.internal.ds.Resolver.checkDependencies(Resolver.java:1139)
+	at org.eclipse.equinox.internal.ds.Resolver.findDependencyCycles(Resolver.java:1087)
+	at org.eclipse.equinox.internal.ds.Resolver.buildNewlySatisfied(Resolver.java:467)
+	at org.eclipse.equinox.internal.ds.Resolver.enableComponents(Resolver.java:217)
+	at org.eclipse.equinox.internal.ds.SCRManager.performWork(SCRManager.java:816)
+	at org.eclipse.equinox.internal.ds.SCRManager$QueuedJob.dispatch(SCRManager.java:783)
+	at org.eclipse.equinox.internal.ds.WorkThread.run(WorkThread.java:89)
+	at org.eclipse.equinox.internal.util.impl.tpt.threadpool.Executor.run(Executor.java:70)
+
+!ENTRY ProvideHealthSupport.impl 4 0 2018-11-15 18:32:11.487
+!MESSAGE [SCR] Circularity Exception found for component: Component[
+	name = ProvideHealthSupport.impl
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, provideHealthSupportImpl.ProvideHealthSupportImpl]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]
+!STACK 0
+org.eclipse.equinox.internal.ds.CircularityException
+	at org.eclipse.equinox.internal.ds.Resolver.processDependencyCycle(Resolver.java:1167)
+	at org.eclipse.equinox.internal.ds.Resolver.checkDependencies(Resolver.java:1134)
+	at org.eclipse.equinox.internal.ds.Resolver.checkDependencies(Resolver.java:1139)
+	at org.eclipse.equinox.internal.ds.Resolver.findDependencyCycles(Resolver.java:1087)
+	at org.eclipse.equinox.internal.ds.Resolver.buildNewlySatisfied(Resolver.java:467)
+	at org.eclipse.equinox.internal.ds.Resolver.enableComponents(Resolver.java:217)
+	at org.eclipse.equinox.internal.ds.SCRManager.performWork(SCRManager.java:816)
+	at org.eclipse.equinox.internal.ds.SCRManager$QueuedJob.dispatch(SCRManager.java:783)
+	at org.eclipse.equinox.internal.ds.WorkThread.run(WorkThread.java:89)
+	at org.eclipse.equinox.internal.util.impl.tpt.threadpool.Executor.run(Executor.java:70)

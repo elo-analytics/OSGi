@@ -1,0 +1,14 @@
+!SESSION 2018-11-16 00:00:31.066 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+
+!ENTRY ProvideHealthSupport.impl 4 0 2018-11-16 00:00:31.066
+!MESSAGE [SCR] Error occurred while processing end tag of XML 'bundleentry://23.fwk1471868639/OSGI-INF/component.xml' in bundle ProvideHealthSupport.impl_1.0.0 [23]!  The component 'ProvideHealthSupport.impl' is invalid. The component must be immediate since it does not provide any services
+
+!ENTRY ProvideHealthSupport.impl 4 0 2018-11-16 00:00:31.070
+!MESSAGE [SCR] Error occurred while processing end tag of XML 'bundleentry://23.fwk1471868639/OSGI-INF/component.xml' in bundle ProvideHealthSupport.impl_1.0.0 [23]!  The component 'ProvideHealthSupport.impl' is invalid. The component must be immediate since it does not provide any services
+
+!ENTRY ProvideHealthSupport.impl 2 0 2018-11-16 00:00:31.072
+!MESSAGE [SCR] No components were found while processing component definition file bundleentry://23.fwk1471868639/OSGI-INF/component.xml

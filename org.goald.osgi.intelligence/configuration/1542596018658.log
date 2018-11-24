@@ -1,0 +1,181 @@
+!SESSION 2018-11-19 00:53:42.718 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+
+!ENTRY org.eclipse.equinox.ds 4 0 2018-11-19 00:53:42.718
+!MESSAGE [SCR] Cannot activate instance provideHealthSupportImpl.ProvideHealthSupportImpl@4dbbdc of component Component[
+	name = ProvideHealthSupportImpl
+	activate = start
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = true
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideHealthSupport.ProvideHealthSupport]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]! The specified activate method was not found! 
+
+!ENTRY org.eclipse.equinox.ds 4 0 2018-11-19 00:53:42.718
+!MESSAGE [SCR] Cannot activate instance provideHealthSupportImpl.ProvideHealthSupportImpl@4dbbdc of component Component[
+	name = ProvideHealthSupportImpl
+	activate = start
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = true
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideHealthSupport.ProvideHealthSupport]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]! The specified activate method was not found! 
+
+!ENTRY org.eclipse.equinox.ds 4 0 2018-11-19 00:54:53.409
+!MESSAGE [SCR] Cannot activate instance provideHealthSupportImpl.ProvideHealthSupportImpl@734318e1 of component Component[
+	name = ProvideHealthSupportImpl
+	activate = start
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = true
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideHealthSupport.ProvideHealthSupport]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]! The specified activate method was not found! 
+
+!ENTRY org.eclipse.equinox.ds 4 0 2018-11-19 00:54:53.409
+!MESSAGE [SCR] Cannot activate instance provideHealthSupportImpl.ProvideHealthSupportImpl@734318e1 of component Component[
+	name = ProvideHealthSupportImpl
+	activate = start
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = true
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideHealthSupport.ProvideHealthSupport]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]! The specified activate method was not found! 
+
+!ENTRY org.eclipse.equinox.ds 4 0 2018-11-19 00:55:09.631
+!MESSAGE [SCR] Cannot activate instance provideHealthSupportImpl.ProvideHealthSupportImpl@792ebcb7 of component Component[
+	name = ProvideHealthSupportImpl
+	activate = start
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = true
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideHealthSupport.ProvideHealthSupport]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]! The specified activate method was not found! 
+
+!ENTRY org.eclipse.equinox.ds 4 0 2018-11-19 00:55:09.633
+!MESSAGE [SCR] Cannot activate instance provideHealthSupportImpl.ProvideHealthSupportImpl@792ebcb7 of component Component[
+	name = ProvideHealthSupportImpl
+	activate = start
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = true
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideHealthSupport.ProvideHealthSupport]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]! The specified activate method was not found! 
+
+!ENTRY org.eclipse.equinox.ds 4 0 2018-11-19 00:56:26.244
+!MESSAGE [SCR] Cannot activate instance provideHealthSupportImpl.ProvideHealthSupportImpl@49435311 of component Component[
+	name = ProvideHealthSupportImpl
+	activate = start
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = true
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideHealthSupport.ProvideHealthSupport]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]! The specified activate method was not found! 
+
+!ENTRY org.eclipse.equinox.ds 4 0 2018-11-19 00:56:26.244
+!MESSAGE [SCR] Cannot activate instance provideHealthSupportImpl.ProvideHealthSupportImpl@49435311 of component Component[
+	name = ProvideHealthSupportImpl
+	activate = start
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = true
+	implementation = provideHealthSupportImpl.ProvideHealthSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideHealthSupport.ProvideHealthSupport]
+	references = {
+		Reference[name = ProvideAutomatedLifeSupport, interface = provideAutomatedLifeSupport.ProvideAutomatedLifeSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideAutomatedLifeSupport, unbind = null]
+		Reference[name = ProvideSelfDiagnosedEmergenciesSupport, interface = provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport, policy = static, cardinality = 1..1, target = null, bind = setProvideSelfDiagnosedEmergenciesSupport, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]! The specified activate method was not found! 
