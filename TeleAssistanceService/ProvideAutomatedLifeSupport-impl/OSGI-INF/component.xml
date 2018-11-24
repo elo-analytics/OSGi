@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" immediate="true" name="ProvideAutomatedLifeSupport-impl">
+   <implementation class="provideAutomatedLifeSupportImpl.ProvideAutomatedLifeSupportImpl"/>
+   <service>
+      <provide interface="provideAutomatedLifeSupport.ProvideAutomatedLifeSupport"/>
+   </service>
+   <reference bind="setMonitorPatient" cardinality="1..1" interface="monitorPatient.MonitorPatient" name="MonitorPatient" policy="static"/>
+   <reference bind="setEnactTreatment" cardinality="1..1" interface="enactTreatment.EnactTreatment" name="EnactTreatment" policy="static"/>>
+</scr:component>

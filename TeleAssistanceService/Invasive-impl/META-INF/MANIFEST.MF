@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: InvasiveImpl
+Bundle-SymbolicName: Invasive-impl
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: invasive
+Provide-Capability: tas;symbolicname="Invasive-definition";version:Version=1.0
+Service-Component: OSGI-INF/component.xml

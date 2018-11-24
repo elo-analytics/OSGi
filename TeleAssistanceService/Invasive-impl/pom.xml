@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>tas</groupId>
+	<artifactId>Invasive-impl</artifactId>
+	<version>1.0.0</version>
+	<name>Invasive Drug Administration</name>
+	<description>Implementation of the Invasive Drug Adm Def</description>
+
+	<packaging>bundle</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>tas</groupId>
+			<artifactId>Invasive-definition</artifactId>
+			<version>1.0.0</version>
+			<type>bundle</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<targetPath>OSGI-INF</targetPath>
+				<filtering>false</filtering>
+				<directory>OSGI-INF</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.1.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version> ${project.version}</Bundle-Version>
+						<Bundle-Version>1.0.0</Bundle-Version>
+						<Import-Package>invasive</Import-Package>
+						<Provide-Capability>tas;symbolicname="Invasive-definition";version:Version=1.0</Provide-Capability>
+						<Service-Component>OSGI-INF/component.xml</Service-Component>
+					</instructions>
+					<remoteOBR>localrepo</remoteOBR>
+					<prefixUrl>
+						file:///C:/Users/jpaul/Documents/Workspaces/localrepo
+					</prefixUrl>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<distributionManagement>
+		<!-- releases repo -->
+		<repository>
+			<id>localrepo</id>
+			<url>file:///C:/Users/jpaul/Documents/Workspaces/localrepo</url>
+		</repository>
+	</distributionManagement>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+</project>

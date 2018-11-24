@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: NonInvasiveImpl
+Bundle-SymbolicName: NonInvasive-impl
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: nonInvasive
+Provide-Capability: tas;symbolicname="NonInvasive-definition";version:Version=1.0
+Service-Component: OSGI-INF/component.xml

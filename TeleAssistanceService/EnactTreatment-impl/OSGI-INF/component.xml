@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" immediate="true" name="EnactTreatment-impl">
+   <implementation class="enactTreatmentImpl.EnactTreatmentImpl"/>
+   <reference bind="setNotifyEmergencyMedicalServices" cardinality="1..1" interface="notifyEmergencyMedicalServices.NotifyEmergencyMedicalServices" name="NotifyEmergencyMedicalServices" policy="static"/>
+   <reference bind="setAdministerMedicine" cardinality="1..1" interface="administerMedicine.AdministerMedicine" name="AdministerMedicine" policy="static"/>
+   <service>
+      <provide interface="enactTreatment.EnactTreatment"/>
+   </service>
+</scr:component>

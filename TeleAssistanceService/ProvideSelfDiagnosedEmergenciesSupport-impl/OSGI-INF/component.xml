@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" enabled="true" immediate="true" name="ProvideSelfDiagnosedEmergenciesSupport-impl">
+   <implementation class="provideSelfDiagnosedEmergenciesSupportImpl.ProvideSelfDiagnosedEmergenciesSupportImpl"/>
+   <service>
+      <provide interface="provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport"/>
+   </service>
+   <reference bind="setNotifyEmergencyMedicalServices" cardinality="1..1" interface="notifyEmergencyMedicalServices.NotifyEmergencyMedicalServices" name="NotifyEmergencyMedicalServices" policy="static"/>
+   <reference bind="setPushButton" cardinality="1..1" interface="pushButton.PushButton" name="PushButton" policy="static"/>
+</scr:component>

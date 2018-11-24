@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ChangeDrug-impl
+Bundle-SymbolicName: ChangeDrug-impl
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: changeDrug,
+ invasive,
+ nonInvasive
+Provide-Capability: tas;symbolicname="ChangeDrug-definition";version:Version=1.0
+Require-Capability: tas;filter:="(symbolicname=Invasive-definition)",
+ tas;filter:="(symbolicname=NonInvasive-definition)"
+Service-Component: OSGI-INF/component.xml
