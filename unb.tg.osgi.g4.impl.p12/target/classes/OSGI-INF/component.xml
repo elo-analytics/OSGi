@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" name="unb.tg.osgi.g4.impl.p12.P12">
-   <implementation class="unb.tg.osgi.g4.impl.p12.P12"/>
-   <service>
-      <provide interface="unb.tg.osgi.g4.api.G4"/>
-   </service>
-</scr:component>
