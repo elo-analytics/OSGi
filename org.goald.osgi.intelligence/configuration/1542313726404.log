@@ -1,0 +1,48 @@
+!SESSION 2018-11-15 18:28:50.812 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+
+!ENTRY ProvideHealthSupport.impl 2 0 2018-11-15 18:28:50.812
+!MESSAGE [SCR] Found components with duplicated names! Details: 
+Component1 : Component[
+	name = ProvideSelfDiagnosedEmergenciesSupport-impl
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = provideSelfDiagnosedEmergenciesSupportImpl.ProvideSelfDiagnosedEmergenciesSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport]
+	references = {
+		Reference[name = PushButton, interface = pushButton.PushButton, policy = static, cardinality = 1..1, target = null, bind = setPushButton, unbind = null]
+		Reference[name = NotifyEmergencyMedicalServices, interface = notifyEmergencyMedicalServices.NotifyEmergencyMedicalServices, policy = static, cardinality = 1..1, target = null, bind = setNotifyEmergencyMedicalServices, unbind = null]
+	}
+	located in bundle = ProvideHealthSupport.impl_1.0.0 [23]
+]
+Component2: Component[
+	name = ProvideSelfDiagnosedEmergenciesSupport-impl
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = provideSelfDiagnosedEmergenciesSupportImpl.ProvideSelfDiagnosedEmergenciesSupportImpl
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport]
+	references = {
+		Reference[name = PushButton, interface = pushButton.PushButton, policy = static, cardinality = 1..1, target = null, bind = setPushButton, unbind = null]
+		Reference[name = NotifyEmergencyMedicalServices, interface = notifyEmergencyMedicalServices.NotifyEmergencyMedicalServices, policy = static, cardinality = 1..1, target = null, bind = setNotifyEmergencyMedicalServices, unbind = null]
+	}
+	located in bundle = ProvideSelfDiagnosedEmergenciesSupport-impl_1.0.0 [32]
+]  

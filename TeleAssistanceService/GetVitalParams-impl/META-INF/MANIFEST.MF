@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GetVitalParams-impl
+Bundle-SymbolicName: GetVitalParams-impl
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: getVitalParams
+Provide-Capability: tas;symbolicname="GetVitalParams-definition";version:Version=1.0
+Service-Component: OSGI-INF/component.xml

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MonitorPatient-impl
+Bundle-SymbolicName: MonitorPatient-impl
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: analyzeData,
+ getVitalParams,
+ monitorPatient
+Provide-Capability: tas;symbolicname="MonitorPatient-definition";version:Version=1.0
+Require-Capability: tas;filter:="(symbolicname=GetVitalParams-definition)",
+ tas;filter:="(symbolicname=AnalyzeData-definition)"
+Service-Component: OSGI-INF/component.xml

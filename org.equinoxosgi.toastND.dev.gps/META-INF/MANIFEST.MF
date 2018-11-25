@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Toast Gps
-Bundle-SymbolicName: org.equinoxosgi.toastND.dev.gps
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.equinoxosgi.toastND.dev.gps
-Bundle-Activator: org.equinoxosgi.toastND.internal.dev.gps.fake.bundle.Activator
-Import-Package: org.osgi.framework;version="1.8.0"

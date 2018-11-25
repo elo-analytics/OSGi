@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ProvideHealthSupport.impl
+Bundle-SymbolicName: ProvideHealthSupport.impl
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: provideAutomatedLifeSupport,
+ provideHealthSupport,
+ provideSelfDiagnosedEmergenciesSupport
+Provide-Capability: tas;symbolicname="ProvideHealthSupport.def";version:Version=1.0
+Require-Capability: tas;filter:="(symbolicname=ProvideAutomatedLifeSupport-definition)",
+ tas;filter:="(symbolicname=ProvideSelfDiagnosedEmergenciesSupport-definition)"
+Service-Component: OSGI-INF/component.xml
+Bundle-ActivationPolicy: lazy

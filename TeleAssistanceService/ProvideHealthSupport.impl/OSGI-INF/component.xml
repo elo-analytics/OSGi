@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" immediate="true" name="ProvideHealthSupportImpl">
+   <implementation class="provideHealthSupportImpl.ProvideHealthSupportImpl"/>
+   <reference bind="setProvideAutomatedLifeSupport" cardinality="1..1" interface="provideAutomatedLifeSupport.ProvideAutomatedLifeSupport" name="ProvideAutomatedLifeSupport" policy="static"/>
+   <reference bind="setProvideSelfDiagnosedEmergenciesSupport" cardinality="1..1" interface="provideSelfDiagnosedEmergenciesSupport.ProvideSelfDiagnosedEmergenciesSupport" name="ProvideSelfDiagnosedEmergenciesSupport" policy="static"/>
+   <service>
+      <provide interface="provideHealthSupport.ProvideHealthSupport"/>
+   </service>
+</scr:component>

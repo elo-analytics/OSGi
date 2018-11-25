@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SendSMS
+Bundle-SymbolicName: SendSMS-impl_1
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: notifyEmergencyMedicalServices,
+ org.osgi.service.component.annotations;version="1.3.0";resolution:=optional
+Provide-Capability: tas;symbolicname="NotifyEmergencyMedicalServices-definition";version:Version=1.0
+Service-Component: OSGI-INF/component.xml
+Require-Bundle: org.eclipse.osgi.services
+Bundle-Activator: sendSMS.Activator

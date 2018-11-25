@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PushButton
+Bundle-SymbolicName: PushButton-impl
+Bundle-Version: 1.0.0.qualifier
+Bundle-ActivationPolicy: lazy
+Import-Package: pushButton
+Provide-Capability: tas;symbolicname="PushButton-definition";version:Version=1.0
+Service-Component: OSGI-INF/component.xml

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="startup" deactivate="shutdown" name="org.equinoxosgi.toastDS.client.emergency">
-   <implementation class="org.equinoxosgi.toastDS.internal.client.emergency.EmergencyMonitor"/>
-   <reference bind="setGps" cardinality="1..1" interface="org.equinoxosgi.toastDS.dev.gps.IGps" name="IGps" policy="static"/>
-   <reference bind="setAirbag" cardinality="1..1" interface="org.equinoxosgi.toastDS.dev.airbag.IAirbag" name="IAirbag" policy="static"/>
-</scr:component>

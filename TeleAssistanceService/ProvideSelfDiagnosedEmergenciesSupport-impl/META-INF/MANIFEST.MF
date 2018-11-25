@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ProvideSelfDiagnosedEmergenciesSupport
+Bundle-SymbolicName: ProvideSelfDiagnosedEmergenciesSupportImpl
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: notifyEmergencyMedicalServices,
+ org.osgi.service.component.annotations;version="1.3.0";resolution:=optional,
+ provideSelfDiagnosedEmergenciesSupport,
+ pushButton
+Provide-Capability: tas;symbolicname="ProvideSelfDiagnosedEmergenciesSupport-definition";version:Version=1.0
+Require-Capability: tas;filter:="(symbolicname=NotifyEmergencyMedicalServices-definition)";effective:=active,
+ tas;filter:="(symbolicname=PushButton-definition)";effective:=active
+Service-Component: OSGI-INF/component.xml

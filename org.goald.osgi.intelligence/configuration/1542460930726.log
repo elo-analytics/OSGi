@@ -1,0 +1,81 @@
+!SESSION 2018-11-17 11:22:14.297 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+
+!ENTRY SendSMS-impl 4 0 2018-11-17 11:22:14.298
+!MESSAGE [SCR] Error occurred while opening component definition file bundleentry://20.fwk1471868639/OSGI-INF/component.xml
+!STACK 0
+java.io.IOException: [Line: 2, Pos: 132]  ''' or '"' expected.
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.err(XMLParserImpl.java:1062)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.err(XMLParserImpl.java:1048)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.parse_attr(XMLParserImpl.java:353)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.parse_attr_list(XMLParserImpl.java:389)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.parse_tag_normal(XMLParserImpl.java:520)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.parseXML(XMLParserImpl.java:1100)
+	at org.eclipse.equinox.internal.util.xml.XMLParser.parseXML(XMLParser.java:95)
+	at org.eclipse.equinox.internal.ds.model.DeclarationParser.parse(DeclarationParser.java:142)
+	at org.eclipse.equinox.internal.ds.ComponentStorage.parseXMLDeclaration(ComponentStorage.java:79)
+	at org.eclipse.equinox.internal.ds.storage.file.FileStorage.processXMLDeclarations(FileStorage.java:114)
+	at org.eclipse.equinox.internal.ds.storage.file.FileStorage.loadComponentDefinitions(FileStorage.java:91)
+	at org.eclipse.equinox.internal.ds.SCRManager.startedBundle2(SCRManager.java:602)
+	at org.eclipse.equinox.internal.ds.SCRManager.startedBundle(SCRManager.java:578)
+	at org.eclipse.equinox.internal.ds.SCRManager.bundleChanged(SCRManager.java:235)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.dispatchEvent(BundleContextImpl.java:908)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:148)
+	at org.eclipse.osgi.internal.framework.EquinoxEventPublisher.publishBundleEventPrivileged(EquinoxEventPublisher.java:213)
+	at org.eclipse.osgi.internal.framework.EquinoxEventPublisher.publishBundleEvent(EquinoxEventPublisher.java:120)
+	at org.eclipse.osgi.internal.framework.EquinoxEventPublisher.publishBundleEvent(EquinoxEventPublisher.java:112)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor.publishModuleEvent(EquinoxContainerAdaptor.java:168)
+	at org.eclipse.osgi.container.Module.publishEvent(Module.java:476)
+	at org.eclipse.osgi.container.Module.start(Module.java:467)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.start(EquinoxBundle.java:383)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.start(EquinoxBundle.java:402)
+	at org.apache.felix.bundlerepository.impl.ResolverImpl.deploy(ResolverImpl.java:600)
+	at org.tg.osgi.intelligence.obr.RepositoryAdm.deploy(RepositoryAdm.java:117)
+	at org.tg.osgi.intelligence.obr.RepositoryAdm.deployResource(RepositoryAdm.java:154)
+	at org.goald.osgi.intelligence.dev.Launcher.search4BundleRemotelly(Launcher.java:333)
+	at org.goald.osgi.intelligence.dev.Launcher.install(Launcher.java:364)
+	at org.goald.osgi.intelligence.dev.Launcher.start(Launcher.java:402)
+	at org.goald.osgi.intelligence.dev.Launcher.executeGoal(Launcher.java:256)
+	at org.goald.osgi.intelligence.dev.Main.main(Main.java:67)
+
+!ENTRY SendSMS-impl 4 0 2018-11-17 11:22:14.309
+!MESSAGE [SCR] Error occurred while opening component definition file bundleentry://20.fwk1471868639/OSGI-INF/component.xml
+!STACK 0
+java.io.IOException: [Line: 2, Pos: 132]  ''' or '"' expected.
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.err(XMLParserImpl.java:1062)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.err(XMLParserImpl.java:1048)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.parse_attr(XMLParserImpl.java:353)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.parse_attr_list(XMLParserImpl.java:389)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.parse_tag_normal(XMLParserImpl.java:520)
+	at org.eclipse.equinox.internal.util.xml.impl.XMLParserImpl.parseXML(XMLParserImpl.java:1100)
+	at org.eclipse.equinox.internal.util.xml.XMLParser.parseXML(XMLParser.java:95)
+	at org.eclipse.equinox.internal.ds.model.DeclarationParser.parse(DeclarationParser.java:142)
+	at org.eclipse.equinox.internal.ds.ComponentStorage.parseXMLDeclaration(ComponentStorage.java:79)
+	at org.eclipse.equinox.internal.ds.storage.file.FileStorage.processXMLDeclarations(FileStorage.java:114)
+	at org.eclipse.equinox.internal.ds.storage.file.FileStorage.loadComponentDefinitions(FileStorage.java:91)
+	at org.eclipse.equinox.internal.ds.SCRManager.startedBundle2(SCRManager.java:602)
+	at org.eclipse.equinox.internal.ds.SCRManager.startedBundle(SCRManager.java:578)
+	at org.eclipse.equinox.internal.ds.SCRManager.bundleChanged(SCRManager.java:235)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.dispatchEvent(BundleContextImpl.java:908)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:148)
+	at org.eclipse.osgi.internal.framework.EquinoxEventPublisher.publishBundleEventPrivileged(EquinoxEventPublisher.java:213)
+	at org.eclipse.osgi.internal.framework.EquinoxEventPublisher.publishBundleEvent(EquinoxEventPublisher.java:120)
+	at org.eclipse.osgi.internal.framework.EquinoxEventPublisher.publishBundleEvent(EquinoxEventPublisher.java:112)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor.publishModuleEvent(EquinoxContainerAdaptor.java:168)
+	at org.eclipse.osgi.container.Module.publishEvent(Module.java:476)
+	at org.eclipse.osgi.container.Module.start(Module.java:467)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.start(EquinoxBundle.java:383)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.start(EquinoxBundle.java:402)
+	at org.apache.felix.bundlerepository.impl.ResolverImpl.deploy(ResolverImpl.java:600)
+	at org.tg.osgi.intelligence.obr.RepositoryAdm.deploy(RepositoryAdm.java:117)
+	at org.tg.osgi.intelligence.obr.RepositoryAdm.deployResource(RepositoryAdm.java:154)
+	at org.goald.osgi.intelligence.dev.Launcher.search4BundleRemotelly(Launcher.java:333)
+	at org.goald.osgi.intelligence.dev.Launcher.install(Launcher.java:364)
+	at org.goald.osgi.intelligence.dev.Launcher.start(Launcher.java:402)
+	at org.goald.osgi.intelligence.dev.Launcher.executeGoal(Launcher.java:256)
+	at org.goald.osgi.intelligence.dev.Main.main(Main.java:67)

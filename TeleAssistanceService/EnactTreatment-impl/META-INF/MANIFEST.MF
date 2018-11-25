@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EnactTreatment-impl
+Bundle-SymbolicName: EnactTreatment-impl
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: administerMedicine,
+ enactTreatment,
+ notifyEmergencyMedicalServices
+Provide-Capability: tas;symbolicname="EnactTreatment-definition";version:Version=1.0
+Require-Capability: tas;filter:="(symbolicname=AdministerMedicine-definition)",
+ tas;filter:="(symbolicname=NotifyEmergencyMedicalServices-definition)"
+Service-Component: OSGI-INF/component.xml

@@ -1,0 +1,11 @@
+!SESSION 2018-11-21 13:26:18.371 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+
+!ENTRY org.eclipse.equinox.ds 2 0 2018-11-21 13:26:18.373
+!MESSAGE [SCR - WorkThread] Timeout occurred! Thread was blocked on processing [QueuedJob] WorkPerformer: org.eclipse.equinox.internal.ds.SCRManager@6cf24e97; actionType 1
+
+!ENTRY org.eclipse.equinox.ds 2 0 2018-11-21 13:26:18.818
+!MESSAGE [SCR] Enabling components of bundle EnactTreatment-impl did not complete in 30000 ms 

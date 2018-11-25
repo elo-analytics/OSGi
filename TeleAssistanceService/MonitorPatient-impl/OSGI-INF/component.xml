@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" immediate="true" name="MonitorPatient-impl">
+   <implementation class="monitorPatientImpl.MonitorPatientImpl"/>
+   <service>
+      <provide interface="monitorPatient.MonitorPatient"/>
+   </service>
+   <reference bind="setGetVitalParams" cardinality="1..1" interface="getVitalParams.GetVitalParams" name="GetVitalParams" policy="static"/>
+   <reference bind="setAnalyzeData" cardinality="1..1" interface="analyzeData.AnalyzeData" name="AnalyzeData" policy="static"/>
+</scr:component>

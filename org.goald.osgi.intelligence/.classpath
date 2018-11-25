@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/jpaul/Documents/UnB/12017/org.eclipse.osgi-3.12.100.jar"/>
+	<classpathentry kind="src" path="/goald-core"/>
+	<classpathentry kind="lib" path="C:/Users/jpaul/Documents/UnB/12017/org.apache.felix.bundlerepository-2.0.10 (1).jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ProvideHealthSupport.def"/>
+	<classpathentry kind="src" path="/NotifyEmergencyMedicalServices-definition"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

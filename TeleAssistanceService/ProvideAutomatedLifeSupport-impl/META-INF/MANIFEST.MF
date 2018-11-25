@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ProvideAutomatedLifeSupport-impl
+Bundle-SymbolicName: ProvideAutomatedLifeSupport-impl
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: enactTreatment,
+ monitorPatient,
+ provideAutomatedLifeSupport
+Provide-Capability: tas;symbolicname="ProvideAutomatedLifeSupport-definition";version:Version=1.0
+Require-Capability: tas;filter:="(symbolicname=MonitorPatient-definition)",
+ tas;filter:="(symbolicname=EnactTreatment-definition)"
+Service-Component: OSGI-INF/component.xml
