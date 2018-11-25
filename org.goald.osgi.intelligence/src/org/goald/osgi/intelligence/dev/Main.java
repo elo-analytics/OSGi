@@ -135,23 +135,23 @@ public class Main {
 		launcher.executeGoal("unb.tg.osgi.g0");
 		//launcher.getTimer().split("Study case 1");
 		
+		pressAnyKeyToContinue();
+		
 		launcher.addScenarioResource("gps_capability");
 		launcher.removeScenarioResource("antenna_triangulation");
 		*/
 		pressAnyKeyToContinue();
 		
-		//launcher.removeScenarioResource(resource, bundleName);
-		
-		/*
+                /*		
 		// S2
 		System.out.println("--------- Starting test case S2 ---------");
 		launcher.cleanScenario();
-		launcher.addScenarioResource("gps_capability", "unb.tg.osgi.g1");
-		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty", "unb.tg.osgi.g2");
-		launcher.addScenarioResource("internet_connection", "unb.tg.osgi.g3");
-		launcher.addScenarioResource("synthesized_voice", "unb.tg.osgi.g5.impl.p15");
+		launcher.addScenarioResource("gps_capability");
+		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty");
+		launcher.addScenarioResource("internet_connection");
+		launcher.addScenarioResource("synthesized_voice");
 		
-		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.setGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 2");
 		
 		pressAnyKeyToContinue();
@@ -159,11 +159,11 @@ public class Main {
 		// S3
 		System.out.println("--------- Starting test case S3 ---------");
 		launcher.cleanScenario();
-		launcher.addScenarioResource("gps_capability", "unb.tg.osgi.g1");
-		launcher.addScenarioResource("internet_connection", "unb.tg.osgi.g3");
-		launcher.addScenarioResource("synthesized_voice", "unb.tg.osgi.g5.impl.p15");
+		launcher.addScenarioResource("gps_capability");
+		launcher.addScenarioResource("internet_connection");
+		launcher.addScenarioResource("synthesized_voice");
 		
-		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.setGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 3");
 			
 		pressAnyKeyToContinue();
@@ -171,12 +171,12 @@ public class Main {
 		// S4
 		System.out.println("--------- Starting test case S4 ---------");
 		launcher.cleanScenario();
-		launcher.addScenarioResource("gps_capability", "unb.tg.osgi.g1");
-		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty", "unb.tg.osgi.g2");
-		launcher.addScenarioResource("storage", "unb.tg.osgi.g3");
-		launcher.addScenarioResource("visible_graphical_interface", "unb.tg.osgi.g5");
+		launcher.addScenarioResource("gps_capability");
+		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty");
+		launcher.addScenarioResource("storage");
+		launcher.addScenarioResource("visible_graphical_interface");
 		
-		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.setGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 4");
 		
 		pressAnyKeyToContinue();
@@ -184,12 +184,12 @@ public class Main {
 		// S5
 		System.out.println("--------- Starting test case S5 ---------");
 		launcher.cleanScenario();
-		launcher.addScenarioResource("gps_capability", "unb.tg.osgi.g1");
-		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty", "unb.tg.osgi.g2");
-		launcher.addScenarioResource("internet_connection", "unb.tg.osgi.g3");
-		launcher.addScenarioResource("interface_navigation_system", "unb.tg.osgi.g5");
+		launcher.addScenarioResource("gps_capability");
+		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty");
+		launcher.addScenarioResource("internet_connection");
+		launcher.addScenarioResource("interface_navigation_system");
 		
-		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.setGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 5");
 		
 		pressAnyKeyToContinue();
@@ -197,11 +197,11 @@ public class Main {
 		// S6
 		System.out.println("--------- Starting test case S6 ---------");
 		launcher.cleanScenario();
-		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty", "unb.tg.osgi.g2");
-		launcher.addScenarioResource("storage", "unb.tg.osgi.g3");
-		launcher.addScenarioResource("synthesized_voice", "unb.tg.osgi.g5.impl.p15");
+		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty");
+		launcher.addScenarioResource("storage");
+		launcher.addScenarioResource("synthesized_voice");
 		
-		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.setGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 6");
 		
 		pressAnyKeyToContinue();
@@ -209,11 +209,11 @@ public class Main {
 		// S7
 		System.out.println("--------- Starting test case S7 ---------");
 		launcher.cleanScenario();
-		launcher.addScenarioResource("gps_capability", "unb.tg.osgi.g1");
-		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty", "unb.tg.osgi.g2");
-		launcher.addScenarioResource("interface_navigation_system", "unb.tg.osgi.g5");
+		launcher.addScenarioResource("gps_capability");
+		launcher.addScenarioResource("protocol_on_board_computer_get_distante_to_empty");
+		launcher.addScenarioResource("interface_navigation_system");
 		
-		launcher.executeGoal("unb.tg.osgi.g0");
+		launcher.setGoal("unb.tg.osgi.g0");
 		launcher.getTimer().split("Study case 7");
 		
 		pressAnyKeyToContinue();
@@ -226,8 +226,8 @@ public class Main {
 		launcher.getTimer().finish();
 		
 		launcher.printTimerResults();
-		*/
-
+		
+*/
 	}
 
 }

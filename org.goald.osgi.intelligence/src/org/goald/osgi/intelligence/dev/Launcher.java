@@ -3,11 +3,14 @@ package org.goald.osgi.intelligence.dev;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 
+import org.apache.felix.bundlerepository.Resource;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -50,7 +53,6 @@ public class Launcher {
 	private RepositoryAdm repoAdmin = null;
 	private LocalRepoAdm localRepo = new LocalRepoAdm();
 	private BundleContext context;
-	private List<String> configBundles;
 	private List<String> userBundles;
 	private List<String> scenarioResources;
 	//private ExperimentTimerImpl timer = new ExperimentTimerImpl();
@@ -62,7 +64,6 @@ public class Launcher {
 
 	Launcher() {
 		
-		configBundles = new ArrayList<String>();
 		userBundles = new ArrayList<String>();
 		scenarioResources = new ArrayList<String>();
 		
@@ -167,12 +168,17 @@ public class Launcher {
 				case BundleEvent.RESOLVED:
 	                break;
 	            case BundleEvent.INSTALLED:
+	            	System.out.println("LISTENTER: Bundle " + event.getBundle().getSymbolicName() + " installed!");
+	            	if (!userBundles.contains(event.getBundle().getSymbolicName()))
+	            		userBundles.add(event.getBundle().getSymbolicName());
 	                break;
 				case BundleEvent.STARTED:
-					userBundles.add(event.getBundle().getSymbolicName());
+					if (!userBundles.contains(event.getBundle().getSymbolicName()))
+						userBundles.add(event.getBundle().getSymbolicName());
 	                break;
 	            case BundleEvent.UNINSTALLED:
-	            	userBundles.remove(event.getBundle().getSymbolicName());
+	            	if (userBundles.contains(event.getBundle().getSymbolicName()))
+	            		userBundles.remove(event.getBundle().getSymbolicName());
 	            	System.out.println("LISTENER: Bundle " + event.getBundle().getSymbolicName() + " Uninstalled!");
 	                break;
 				case BundleEvent.UNRESOLVED:
@@ -197,12 +203,18 @@ public class Launcher {
 			planner.getScenario().add(resource);
 	}
 	
+	public List<String> artifactsToString (Set<Artifact> artifacts) {
+		List<String> bundleNames = new ArrayList<String>();
+		for (Artifact art : artifacts)
+			bundleNames.add(art.getIdentification());
+		return bundleNames;
+	}
 	
 	/*
 	 * Make a new plan to recover from a crash of a environment context
 	 * */
 	public void replan() {
-		List<String> newPlan = new ArrayList<String>();
+		List<String> newPlan = null;
 		List<String> newBundles = null;
 		List<String> toRemove = null;
 		
@@ -222,11 +234,11 @@ public class Launcher {
 		newBundles.removeAll(userBundles);	// new bundles to install
 		toRemove.removeAll(newPlan);		// old bundles to remove
 		
+		//for (String bundle : newBundles)
+		//	executeGoal(bundle, newBundles);
+		
 		for (String bundle : toRemove)
 			uninstall(bundle);
-		
-		for (String bundle : newBundles)
-			start(bundle);
 	}
 	
 	public void removeScenarioResource (String resource) {
@@ -296,20 +308,14 @@ public class Launcher {
 	}
 	*/
 	public void removeAllBundles () {
-		Iterator<String> iter = userBundles.iterator();
-		while(iter.hasNext()) {
-			String bundleName = iter.next();
-			uninstall(bundleName);
-			iter.remove();
+		for (int i = userBundles.size()-1; i >= 0; i--) {
+			uninstall(userBundles.get(i));
 		}
 	}
 	
 	public void removeAllScenarioRes () {
-		Iterator<String> iter = scenarioResources.iterator();
-		while(iter.hasNext()) {
-			String resource = iter.next();
-			iter.remove();
-		}
+		for (int i = planner.getScenario().size()-1; i >= 0; i--)
+			planner.getScenario().remove(i);
 	}
 	
 	public void cleanScenario () {
