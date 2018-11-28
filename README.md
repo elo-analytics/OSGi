@@ -9,49 +9,47 @@ It is built on top of the OSGi technology for the creation and deployment of the
 Bundles are created as java projects with OSGi metadata and exported with Maven to a repository.
 The intelligence is responsible for starting an OSGi Framework, fetching the repository (with Apache Felix BundleRepository) and starting the bundles in order to provide a service.
 
-= Setup
+## Setup
 
-== JDK8 the compiler and virtual machine
+### JDK8 the compiler and virtual machine
 
 Install JDK8: 
 	http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 	
-== Eclipse (Neon) the IDE
+### Eclipse (Neon) the IDE
 	http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/
 
 	
-== Maven: Dependency Manager and Build	
+### Maven: Dependency Manager and Build	
 
 It should come with Eclipse, don't worry.
 
-== Apache Feliz Bundle Repository (2.0.10)
+### Apache Feliz Bundle Repository (2.0.10)
     https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.bundlerepository/2.0.10
     
 
-
-
-= Building and Running GOALD
+## Building and Running GOALD
 
  * clone the repos: 
   $ git clone https://github.com/jcosta9/OSGi.git
   $ git clone https://github.com/lesunb/goald/ 
 
-== Importing project into Eclipse
+### Importing projects into Eclipse
 
  * Open Eclipse
  * File > Import > Existing Project
  * Find the folder where you cloned goald project
  * Accept the defaults
 
-== Add Dependencies to the Project
+### Add Dependencies to the Project
  * Project > Preferences > Lib Path
  * Add GoalD and Apache Bundle Repository as a dependencies
 
-== Running
+### Running
  * Run as a Java Project
 
-== Bugs? Doubts?
+## Bugs? Doubts?
 
 * Look for existing issues or create a new one describing your problem or doubt
 * Contact the author by email
