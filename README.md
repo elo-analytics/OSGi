@@ -31,9 +31,9 @@ It should come with Eclipse, don't worry.
 
 ## Building and Running GOALD
 
- * clone the repos: 
-  $ git clone https://github.com/jcosta9/OSGi.git
-  $ git clone https://github.com/lesunb/goald/ 
+### clone repos: 
+  * git clone https://github.com/jcosta9/OSGi.git
+  * git clone https://github.com/lesunb/goald/ 
 
 ### Importing projects into Eclipse
 
