@@ -3,9 +3,11 @@
 Intro 
 =====
 
-This project intends to create an execution environment for the Goal-Driven Deployment Framework (https://github.com/lesunb/goald/wiki/Goald[GoalD])
+This project intends to create an execution environment for the Goal-Driven Deployment Framework (https://github.com/lesunb/goald).
+It is built on top of the OSGi technology for the creation and deployment of the bundles.
 
-
+Bundles are created as java projects with OSGi metadata and exported with Maven to a repository.
+The intelligence is responsible for starting an OSGi Framework, fetching the repository (with Apache Felix BundleRepository) and starting the bundles in order to provide a service.
 
 = Setup
 
@@ -15,18 +17,24 @@ Install JDK8:
 	http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 	
-== Eclipse (Mars) the IDE
-	http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/mars2
+== Eclipse (Neon) the IDE
+	http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/
 
 	
 == Maven: Dependency Manager and Build	
 
 It should come with Eclipse, don't worry.
 
+== Apache Feliz Bundle Repository (2.0.10)
+    https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.bundlerepository/2.0.10
+    
+
+
 
 = Building and Running GOALD
 
- * clone the repo: 
+ * clone the repos: 
+  $ git clone https://github.com/jcosta9/OSGi.git
   $ git clone https://github.com/lesunb/goald/ 
 
 == Importing project into Eclipse
@@ -36,28 +44,18 @@ It should come with Eclipse, don't worry.
  * Find the folder where you cloned goald project
  * Accept the defaults
 
-== Run Tests into Eclipse
+== Add Dependencies to the Project
+ * Project > Preferences > Lib Path
+ * Add GoalD and Apache Bundle Repository as a dependencies
 
- * Right click in the goald-core project
- * Run As > JUnit Tests
-
-== Run Scalability Evaluation
-
- * Right click in the evaluation project
- * Run As > Java Application
- * Choose EvaluationMain class
- * The evaluation experiment should init and you should see logs into the console of Eclipse.
- * Final result should be created at evaluation > result
- * Evaluation param can be changed at the class
- 
-goald.evaluation.plans.CreateExperimentsToEvaluateScalabilityOverNumberOfGoalsAndContexts3d
-
+== Running
+ * Run as a Java Project
 
 == Bugs? Doubts?
 
 * Look for existing issues or create a new one describing your problem or doubt
 * Contact the author by email
-	* gabrielsr@gmail.com
+	* jpaulo.caraujo@gmail.com
 
 <h1><img src="http://enroute.osgi.org/img/enroute-logo-64.png" witdh=40px style="float:left;margin: 0 1em 1em 0;width:40px">
 OSGi enRoute Archetype</h1>
