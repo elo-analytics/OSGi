@@ -30,7 +30,7 @@ It should come with Eclipse, don't worry.
     https://mvnrepository.com/artifact/org.apache.felix/org.apache.felix.bundlerepository/2.0.10
     
 
-## Building and Running GOALD
+## Building and Running
 
 ### clone repos: 
   * git clone https://github.com/jcosta9/OSGi.git
