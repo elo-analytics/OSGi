@@ -6,8 +6,9 @@ Intro
 This project intends to create an execution environment for the Goal-Driven Deployment Framework (https://github.com/lesunb/goald).
 It is built on top of the OSGi technology for the creation and deployment of the bundles.
 
-Bundles are created as java projects with OSGi metadata and exported with Maven to a repository.
-The intelligence is responsible for starting an OSGi Framework, fetching the repository (with Apache Felix BundleRepository) and starting the bundles in order to provide a service.
+Bundles are created as Java projects with OSGi metadata. Each bundle must be paired with an Interface, also in a bundle format for service specification, and must include a Manifest File for bundle identification - Requirement-capability Functional Headers may also be included for quality purposes. Besides, it is required for bundles to export services through Declarative Services Metadata. In this project, we also used Maven for the distribution in the target environment.
+
+The Intelligence handles the OSGi Framework and the lifecycle of bundles. It is responsible for setting up an OSGi Framework, by making use of the OSGi's API; communicating with the outer world by listening to context and goal changes provided by the user - programmatically for now; calling Goald for the execution of the deployment plan, in order to properly cope with changes; fetching a repository for desired bundles, by using Apache Felix Bundle Repository's API; and deploying bundles into the environment as a means to provide a service.
 
 ## Setup
 
