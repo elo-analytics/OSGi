@@ -1,4 +1,3 @@
 theme: jekyll-theme-leap-day
 title: GoalD OSGi Execution Environment
-description: This project intends to create an execution environment for the Goal-Driven Deployment Framework (https://github.com/lesunb/goald). It is built on top of the OSGi technology for the creation and deployment of the bundles.
 show_downloads: "true"
